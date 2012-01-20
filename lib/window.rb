@@ -43,7 +43,7 @@ class Window
 
   def display
     @display ||= Proc.new do
-      glClear(GL_COLOR_BUFFER_BIT)
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
       objects.each do |object|
         glLoadIdentity
         object[:object].draw
@@ -119,12 +119,40 @@ class Window
     glTranslatef(-0.002, 0.0, 0.0)
   end
 
+  def reshape
+    reshape = lambda {
+      glViewport(0, 0, @width, @height)
+      glMatrixMode(GL_PROJECTION)
+      glLoadIdentity
+      glMatrixMode(GL_MODELVIEW)
+      perspective
+    }
+  end
+
+  def perspective
+    gluPerspective(45 * 1, @width/@height, 1.1, 1000) #aspect ratio
+  end
+
+  def init_gl
+    glClearColor(0,0,0,0)
+    glClearDepth(1.0)
+    glDepthFunc(GL_LESS)
+    glEnable(GL_DEPTH_TEST)
+    glShadeModel(GL_SMOOTH)
+
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity
+
+    perspective
+    glMatrixMode(GL_MODELVIEW)
+  end
+
   def draw
     puts "Initializing configuration options"
     instance_eval &config
     puts "Creating window"
     glutInit
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB)
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH)
     glutInitWindowSize(@width, @height)
     glutInitWindowPosition(@left, @top)
     glutCreateWindow(@title)
@@ -132,9 +160,11 @@ class Window
     glutKeyboardUpFunc(key_up)
     glutDisplayFunc(display)
     glutIdleFunc(idle)
+    glutReshapeFunc(reshape)
     puts "Performing starting options"
     instance_eval &start
     puts "Entering main loop"
+    init_gl
     glutMainLoop
   end
 

@@ -1,8 +1,6 @@
 require 'set'
 require 'window'
-require 'background'
-require 'player'
-require 'arrow'
+require 'cube'
 
 Window.draw do
 
@@ -14,36 +12,7 @@ Window.draw do
   left 10
   top 10
 
-  add :background, Background.new(1.5)
-  add :player, Player.new
-
-  on "a" do
-    tell(:player).to(:turn_left).and(:walk)
-  end
-
-  on "d" do
-    tell(:player).to(:turn_right).and(:walk)
-  end
-
-  on "w" do
-    tell(:player).to(:jump)
-  end
-
-  on " " do
-    tell(:player).to(:shoot)
-  end
-
-  on "r" do
-    tell(:player).to(:reload)
-  end
-
-  on "h" do
-    move_viewport_left
-  end
-
-  on "l" do
-    move_viewport_right
-  end
+  add :cube, Cube.new
 
   on "f" do
     enter_fullscreen
