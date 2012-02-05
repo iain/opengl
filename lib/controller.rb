@@ -41,7 +41,7 @@ class Controller
   def apply
     keys.each do |key|
       callback = callbacks[key]
-      instance_eval &callback if callback
+      instance_eval(&callback) if callback
     end
     on_tick
   end
