@@ -1,0 +1,103 @@
+#!/usr/bin/env ruby -I lib
+
+require 'environment'
+
+class SpaceWars < Controller
+
+  on "w" do
+    spaceship.size *= 1.1
+  end
+
+  on "s" do
+    spaceship.size *= 0.9
+  end
+
+  on "+" do
+    camera.zoom_out
+  end
+
+  on "k" do
+    # camera.offset_x += 0.01
+  end
+
+  on "q" do
+    exit
+  end
+
+  def spaceship
+    @spaceship ||= Spaceship.new
+  end
+
+  def on_tick
+    spaceship.animate
+  end
+
+end
+
+
+class Spaceship
+
+  attr_accessor :size, :x, :y, :z
+
+  def initialize
+    @size = 0.5
+    @x = 0
+    @y = 0
+    @z = 0
+  end
+
+  def animate
+    @x += 0.1
+    @y += 0.2
+    @z += 0.3
+  end
+
+end
+
+
+class Fuselage < View
+
+  def draw
+    glRotate(@model.x, 1, 0, 0)
+    glRotate(@model.y, 0, 1, 0)
+    glRotate(@model.z, 0, 0, 1)
+
+    glColor(1, 0, 0)
+    glutSolidTeapot @model.size
+  end
+
+end
+
+class Camera
+
+  def zoom_in
+  end
+
+  def zoom_out
+  end
+
+  private
+
+  def rotator
+    @rotator ||= Rotator.new
+  end
+
+end
+
+class CameraView < View
+
+  def draw!
+    glMultMatrix(@model.matrix)
+  end
+
+end
+
+space_wars = SpaceWars.new
+window = Window.new(space_wars)
+
+$camera = Rotator.new
+
+window.views << CameraView.new($camera)
+window.views << Fuselage.new(space_wars.spaceship)
+
+window.start
