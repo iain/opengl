@@ -20,6 +20,10 @@ class Rotator
     ]
   end
 
+  def roll!(r)
+    self.matrix *= roll(r)
+  end
+
   def yaw(r)
     M[
       [  cos(r), -sin(r), 0, 0 ],
@@ -29,6 +33,10 @@ class Rotator
     ]
   end
 
+  def yaw!(r)
+    self.matrix *= yaw(r)
+  end
+
   def pitch(r)
     M[
       [  1,      0,       0, 0 ],
@@ -36,6 +44,10 @@ class Rotator
       [  0, sin(r),  cos(r), 0 ],
       [  0,      0,       0, 1 ]
     ]
+  end
+
+  def pitch!(r)
+    self.matrix *= pitch(r)
   end
 
   def translate(x, y, z)

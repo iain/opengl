@@ -41,19 +41,26 @@ end
 
 class Spaceship
 
-  attr_accessor :size, :x, :y, :z
+  attr_accessor :size
 
   def initialize
     @size = 0.5
-    @x = 0
-    @y = 0
-    @z = 0
   end
 
   def animate
-    @x += 0.1
-    @y += 0.2
-    @z += 0.3
+    rotator.yaw!(0.01)
+    rotator.pitch!(-0.01)
+    rotator.roll!(0.02)
+  end
+
+  def rotation
+    rotator.matrix
+  end
+
+  private
+
+  def rotator
+    @rotator ||= Rotator.new
   end
 
 end
@@ -62,9 +69,7 @@ end
 class Fuselage < View
 
   def draw
-    glRotate(@model.x, 1, 0, 0)
-    glRotate(@model.y, 0, 1, 0)
-    glRotate(@model.z, 0, 0, 1)
+    glMultMatrix(@model.rotation)
 
     glColor(1, 0, 0)
     glutSolidTeapot @model.size
