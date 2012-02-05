@@ -12,6 +12,14 @@ class SpaceWars < Controller
     spaceship.size *= 0.9
   end
 
+  on "a" do
+    spaceship.turn_left
+  end
+
+  on "d" do
+    spaceship.turn_right
+  end
+
   on "=" do
     $camera.zoom_in
   end
@@ -69,6 +77,14 @@ class Spaceship
     rotator.matrix
   end
 
+  def turn_left
+    rotator.roll!(0.1)
+  end
+
+  def turn_right
+    rotator.roll!(-0.1)
+  end
+
   private
 
   def rotator
@@ -95,14 +111,12 @@ class Camera
     @zoom = zoom
   end
 
-  # XXX this is wrong
   def zoom_in
-    @zoom += 0.01
+    @zoom += 0.1
   end
 
-  # XXX this is wrong
   def zoom_out
-    @zoom -= 0.01
+    @zoom -= 0.1
   end
 
   def roll(r)
@@ -137,7 +151,7 @@ end
 space_wars = SpaceWars.new
 window = Window.new(space_wars)
 
-$camera = Camera.new -2
+$camera = Camera.new(-2)
 
 window.views << CameraView.new($camera)
 window.views << Fuselage.new(space_wars.spaceship)
