@@ -20,8 +20,20 @@ class SpaceWars < Controller
     $camera.zoom_out
   end
 
+  on "h" do
+    $camera.roll(-0.01)
+  end
+
+  on "j" do
+    $camera.pitch( 0.01)
+  end
+
   on "k" do
-    # camera.offset_x += 0.01
+    $camera.pitch(-0.01)
+  end
+
+  on "l" do
+    $camera.roll( 0.01)
   end
 
   on "q" do
@@ -33,7 +45,7 @@ class SpaceWars < Controller
   end
 
   def on_tick
-    spaceship.animate
+    #spaceship.animate
   end
 
 end
@@ -79,18 +91,31 @@ end
 
 class Camera
 
+  def initialize zoom = 0
+    @zoom = zoom
+  end
+
   # XXX this is wrong
   def zoom_in
-    rotator.translate(0, 0, 0.01)
+    @zoom += 0.01
   end
 
   # XXX this is wrong
   def zoom_out
-    rotator.translate(0, 0, -0.01)
+    @zoom -= 0.01
+  end
+
+  def roll(r)
+    rotator.roll!(r)
+  end
+
+  def pitch(r)
+    rotator.pitch!(r)
   end
 
   def rotation
     rotator.matrix.inverse
+    rotator.matrix + rotator.translate(0, 0, @zoom)
   end
 
   private
@@ -112,7 +137,7 @@ end
 space_wars = SpaceWars.new
 window = Window.new(space_wars)
 
-$camera = Camera.new
+$camera = Camera.new -2
 
 window.views << CameraView.new($camera)
 window.views << Fuselage.new(space_wars.spaceship)

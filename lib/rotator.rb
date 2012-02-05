@@ -51,12 +51,16 @@ class Rotator
   end
 
   def translate(x, y, z)
-    self.matrix += M[
+    M[
       [ 0, 0, 0, 0],
       [ 0, 0, 0, 0],
       [ 0, 0, 0, 0],
       [ x, y, z, 0]
     ]
+  end
+
+  def translate!(x, y, z)
+    self.matrix += translate(x, y, z)
   end
 
 end
