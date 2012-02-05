@@ -12,8 +12,12 @@ class SpaceWars < Controller
     spaceship.size *= 0.9
   end
 
-  on "+" do
-    camera.zoom_out
+  on "=" do
+    $camera.zoom_in
+  end
+
+  on "-" do
+    $camera.zoom_out
   end
 
   on "k" do
@@ -70,10 +74,18 @@ end
 
 class Camera
 
+  # XXX this is wrong
   def zoom_in
+    rotator.translate(0, 0, 0.01)
   end
 
+  # XXX this is wrong
   def zoom_out
+    rotator.translate(0, 0, -0.01)
+  end
+
+  def rotation
+    rotator.matrix.inverse
   end
 
   private
@@ -87,7 +99,7 @@ end
 class CameraView < View
 
   def draw!
-    glMultMatrix(@model.matrix)
+    glMultMatrix(@model.rotation)
   end
 
 end
@@ -95,7 +107,7 @@ end
 space_wars = SpaceWars.new
 window = Window.new(space_wars)
 
-$camera = Rotator.new
+$camera = Camera.new
 
 window.views << CameraView.new($camera)
 window.views << Fuselage.new(space_wars.spaceship)
