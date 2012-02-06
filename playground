@@ -29,19 +29,19 @@ class SpaceWars < Controller
   end
 
   on "h" do
-    $camera.roll(-0.01)
+    $camera.roll(-0.1)
   end
 
   on "j" do
-    $camera.pitch( 0.01)
+    $camera.pitch( 0.1)
   end
 
   on "k" do
-    $camera.pitch(-0.01)
+    $camera.pitch(-0.1)
   end
 
   on "l" do
-    $camera.roll( 0.01)
+    $camera.roll( 0.1)
   end
 
   on "q" do
