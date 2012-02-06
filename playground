@@ -106,43 +106,43 @@ class Fuselage < View
     glBegin(GL_QUADS)
 
     #front
-    glTexCoord(-1.0,-1.0, 1.0); glVertex(-1.0,-1.0, 1.0)
-    glTexCoord(-1.0, 1.0, 1.0); glVertex(-1.0, 1.0, 1.0)
-    glTexCoord( 1.0, 1.0, 1.0); glVertex( 1.0, 1.0, 1.0)
-    glTexCoord( 1.0,-1.0, 1.0); glVertex( 1.0,-1.0, 1.0)
+    glTexCoord( 0.0, 1.0); glVertex(-1.0,-1.0, 1.0)
+    glTexCoord( 1.0, 1.0); glVertex(-1.0, 1.0, 1.0)
+    glTexCoord( 1.0, 0.0); glVertex( 1.0, 1.0, 1.0)
+    glTexCoord( 0.0, 0.0); glVertex( 1.0,-1.0, 1.0)
 
 
     #back
-    glTexCoord(-1.0,-1.0,-1.0); glVertex(-1.0,-1.0,-1.0)
-    glTexCoord(-1.0, 1.0,-1.0); glVertex(-1.0, 1.0,-1.0)
-    glTexCoord( 1.0, 1.0,-1.0); glVertex( 1.0, 1.0,-1.0)
-    glTexCoord( 1.0,-1.0,-1.0); glVertex( 1.0,-1.0,-1.0)
+    glTexCoord( 0.0, 1.0); glVertex(-1.0,-1.0,-1.0)
+    glTexCoord( 1.0, 1.0); glVertex(-1.0, 1.0,-1.0)
+    glTexCoord( 1.0, 0.0); glVertex( 1.0, 1.0,-1.0)
+    glTexCoord( 0.0, 0.0); glVertex( 1.0,-1.0,-1.0)
 
     #top
-    glTexCoord(-1.0, 1.0,-1.0); glVertex(-1.0, 1.0,-1.0)
-    glTexCoord(-1.0, 1.0, 1.0); glVertex(-1.0, 1.0, 1.0)
-    glTexCoord( 1.0, 1.0, 1.0); glVertex( 1.0, 1.0, 1.0)
-    glTexCoord( 1.0, 1.0,-1.0); glVertex( 1.0, 1.0,-1.0)
+    glTexCoord( 0.0, 0.0); glVertex(-1.0, 1.0,-1.0)
+    glTexCoord( 0.0, 1.0); glVertex(-1.0, 1.0, 1.0)
+    glTexCoord( 1.0, 1.0); glVertex( 1.0, 1.0, 1.0)
+    glTexCoord( 1.0, 0.0); glVertex( 1.0, 1.0,-1.0)
 
     #bottom
-    glTexCoord(-1.0,-1.0,-1.0); glVertex(-1.0,-1.0,-1.0)
-    glTexCoord(-1.0,-1.0, 1.0); glVertex(-1.0,-1.0, 1.0)
-    glTexCoord( 1.0,-1.0, 1.0); glVertex( 1.0,-1.0, 1.0)
-    glTexCoord( 1.0,-1.0,-1.0); glVertex( 1.0,-1.0,-1.0)
+    glTexCoord( 0.0, 0.0); glVertex(-1.0,-1.0,-1.0)
+    glTexCoord( 0.0, 1.0); glVertex(-1.0,-1.0, 1.0)
+    glTexCoord( 1.0, 1.0); glVertex( 1.0,-1.0, 1.0)
+    glTexCoord( 1.0, 0.0); glVertex( 1.0,-1.0,-1.0)
 
     #left
-    glTexCoord(-1.0,-1.0,-1.0); glVertex(-1.0,-1.0,-1.0)
-    glTexCoord(-1.0,-1.0, 1.0); glVertex(-1.0,-1.0, 1.0)
-    glTexCoord(-1.0, 1.0, 1.0); glVertex(-1.0, 1.0, 1.0)
-    glTexCoord(-1.0, 1.0,-1.0); glVertex(-1.0, 1.0,-1.0)
+    glTexCoord( 0.0, 0.0); glVertex(-1.0,-1.0,-1.0)
+    glTexCoord( 0.0, 1.0); glVertex(-1.0,-1.0, 1.0)
+    glTexCoord( 1.0, 1.0); glVertex(-1.0, 1.0, 1.0)
+    glTexCoord( 1.0, 0.0); glVertex(-1.0, 1.0,-1.0)
 
     #right
-    glTexCoord( 1.0,-1.0,-1.0); glVertex( 1.0,-1.0,-1.0)
-    glTexCoord( 1.0,-1.0, 1.0); glVertex( 1.0,-1.0, 1.0)
-    glTexCoord( 1.0, 1.0, 1.0); glVertex( 1.0, 1.0, 1.0)
-    glTexCoord( 1.0, 1.0,-1.0); glVertex( 1.0, 1.0,-1.0)
-
+    glTexCoord( 0.0, 0.0); glVertex( 1.0,-1.0,-1.0)
+    glTexCoord( 0.0, 1.0); glVertex( 1.0,-1.0, 1.0)
+    glTexCoord( 1.0, 1.0); glVertex( 1.0, 1.0, 1.0)
+    glTexCoord( 1.0, 0.0); glVertex( 1.0, 1.0,-1.0)
     glEnd
+
   end
 
 end
