@@ -21,7 +21,7 @@ class Rotator
   end
 
   def roll!(r)
-    self.matrix *= roll(r)
+    self.matrix = roll(r) * matrix
   end
 
   def yaw(r)
@@ -34,7 +34,7 @@ class Rotator
   end
 
   def yaw!(r)
-    self.matrix *= yaw(r)
+    self.matrix = yaw(r) * matrix
   end
 
   def pitch(r)
@@ -47,7 +47,7 @@ class Rotator
   end
 
   def pitch!(r)
-    self.matrix *= pitch(r)
+    self.matrix = pitch(r) * matrix
   end
 
   def translate(x, y, z)
