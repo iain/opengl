@@ -4,7 +4,12 @@ require 'glut'
 require 'mathn'
 require 'singleton'
 
-require 'controller'
-require 'view'
-require 'window'
-require 'rotator'
+require 'mechanics/rotation'
+
+require 'controllers/controller'
+
+require 'models/camera'
+
+require 'views/view'
+require 'views/window'
+require 'views/camera_view'

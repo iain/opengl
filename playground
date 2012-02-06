@@ -2,6 +2,9 @@
 
 require 'environment'
 
+require 'models/spaceship'
+require 'views/fuselage'
+
 class SpaceWars < Controller
 
   on "w" do
@@ -86,124 +89,8 @@ class SpaceWars < Controller
 
 end
 
-
-class Spaceship
-
-  attr_accessor :size
-
-  def initialize
-    @size = 0.5
-  end
-
-  def animate
-    #rotator.yaw!(0.01)
-    #rotator.pitch!(-0.01)
-    #rotator.roll!(0.02)
-  end
-
-  def rotation
-    rotator.matrix
-  end
-
-  def roll_left
-    rotator.roll!(-0.1)
-  end
-
-  def roll_right
-    rotator.roll!(0.1)
-  end
-
-  def yaw_left
-    rotator.yaw!(-0.1)
-  end
-
-  def yaw_right
-    rotator.yaw!(0.1)
-  end
-
-  def reset_rotation
-    rotator.reset
-  end
-
-  def pitch_down
-    rotator.pitch!( 0.1)
-  end
-
-  def pitch_up
-    rotator.pitch!(-0.1)
-  end
-
-  def accelerate
-    rotator.translate!(0,0,0.1)
-  end
-
-  def brake
-    rotator.translate!(0,0,-0.1)
-  end
-
-  private
-
-  def rotator
-    @rotator ||= Rotator.new
-  end
-
-end
-
-
-class Fuselage < View
-
-  def draw
-    glMultMatrix(@model.rotation)
-
-    glColor(1, 0, 0)
-    glutSolidCube @model.size
-  end
-
-end
-
-class Camera
-
-  def initialize(zoom = 0)
-    @zoom = zoom
-  end
-
-  def zoom_in
-    @zoom += 0.1
-  end
-
-  def zoom_out
-    @zoom -= 0.1
-  end
-
-  def roll(r)
-    rotator.roll!(r)
-  end
-
-  def pitch(r)
-    rotator.pitch!(r)
-  end
-
-  def rotation
-    rotator.matrix + rotator.translate(0, 0, @zoom)
-  end
-
-  private
-
-  def rotator
-    @rotator ||= Rotator.new
-  end
-
-end
-
-class CameraView < View
-
-  def draw!
-    glMultMatrix(@model.rotation)
-  end
-
-end
-
 space_wars = SpaceWars.new
+
 window = Window.new(space_wars)
 
 $camera = Camera.new(-2)
