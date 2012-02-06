@@ -64,7 +64,7 @@ class Rotator
   end
 
   def translate!(x, y, z)
-    self.matrix += translate(x, y, z)
+    self.matrix += translate(x, y, z) * matrix
   end
 
 end

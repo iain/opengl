@@ -5,11 +5,11 @@ require 'environment'
 class SpaceWars < Controller
 
   on "w" do
-    spaceship.pitch_left
+    spaceship.pitch_down
   end
 
   on "s" do
-    spaceship.pitch_right
+    spaceship.pitch_up
   end
 
   on "a" do
@@ -30,6 +30,14 @@ class SpaceWars < Controller
 
   on "x" do
     spaceship.reset_rotation
+  end
+
+  on '[' do
+    spaceship.accelerate
+  end
+
+  on '\'' do
+    spaceship.brake
   end
 
   on "=" do
@@ -88,9 +96,9 @@ class Spaceship
   end
 
   def animate
-    rotator.yaw!(0.01)
-    rotator.pitch!(-0.01)
-    rotator.roll!(0.02)
+    #rotator.yaw!(0.01)
+    #rotator.pitch!(-0.01)
+    #rotator.roll!(0.02)
   end
 
   def rotation
@@ -105,14 +113,6 @@ class Spaceship
     rotator.roll!(0.1)
   end
 
-  def pitch_left
-    rotator.pitch!(-0.1)
-  end
-
-  def pitch_right
-    rotator.pitch!(0.1)
-  end
-
   def yaw_left
     rotator.yaw!(-0.1)
   end
@@ -123,6 +123,22 @@ class Spaceship
 
   def reset_rotation
     rotator.reset
+  end
+
+  def pitch_down
+    rotator.pitch!( 0.1)
+  end
+
+  def pitch_up
+    rotator.pitch!(-0.1)
+  end
+
+  def accelerate
+    rotator.translate!(0,0,0.1)
+  end
+
+  def brake
+    rotator.translate!(0,0,-0.1)
   end
 
   private
@@ -140,7 +156,7 @@ class Fuselage < View
     glMultMatrix(@model.rotation)
 
     glColor(1, 0, 0)
-    glutSolidTeapot @model.size
+    glutSolidCube @model.size
   end
 
 end
