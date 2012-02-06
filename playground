@@ -104,45 +104,7 @@ class Fuselage < View
     texture = $window.textures.find(:wooden_box)
     glBindTexture( GL_TEXTURE_2D, texture )
     glBegin(GL_QUADS)
-
-    #front
-    glTexCoord( 0.0, 1.0); glVertex(-1.0,-1.0, 1.0)
-    glTexCoord( 1.0, 1.0); glVertex(-1.0, 1.0, 1.0)
-    glTexCoord( 1.0, 0.0); glVertex( 1.0, 1.0, 1.0)
-    glTexCoord( 0.0, 0.0); glVertex( 1.0,-1.0, 1.0)
-
-
-    #back
-    glTexCoord( 0.0, 1.0); glVertex(-1.0,-1.0,-1.0)
-    glTexCoord( 1.0, 1.0); glVertex(-1.0, 1.0,-1.0)
-    glTexCoord( 1.0, 0.0); glVertex( 1.0, 1.0,-1.0)
-    glTexCoord( 0.0, 0.0); glVertex( 1.0,-1.0,-1.0)
-
-    #top
-    glTexCoord( 0.0, 0.0); glVertex(-1.0, 1.0,-1.0)
-    glTexCoord( 0.0, 1.0); glVertex(-1.0, 1.0, 1.0)
-    glTexCoord( 1.0, 1.0); glVertex( 1.0, 1.0, 1.0)
-    glTexCoord( 1.0, 0.0); glVertex( 1.0, 1.0,-1.0)
-
-    #bottom
-    glTexCoord( 0.0, 0.0); glVertex(-1.0,-1.0,-1.0)
-    glTexCoord( 0.0, 1.0); glVertex(-1.0,-1.0, 1.0)
-    glTexCoord( 1.0, 1.0); glVertex( 1.0,-1.0, 1.0)
-    glTexCoord( 1.0, 0.0); glVertex( 1.0,-1.0,-1.0)
-
-    #left
-    glTexCoord( 0.0, 0.0); glVertex(-1.0,-1.0,-1.0)
-    glTexCoord( 0.0, 1.0); glVertex(-1.0,-1.0, 1.0)
-    glTexCoord( 1.0, 1.0); glVertex(-1.0, 1.0, 1.0)
-    glTexCoord( 1.0, 0.0); glVertex(-1.0, 1.0,-1.0)
-
-    #right
-    glTexCoord( 0.0, 0.0); glVertex( 1.0,-1.0,-1.0)
-    glTexCoord( 0.0, 1.0); glVertex( 1.0,-1.0, 1.0)
-    glTexCoord( 1.0, 1.0); glVertex( 1.0, 1.0, 1.0)
-    glTexCoord( 1.0, 0.0); glVertex( 1.0, 1.0,-1.0)
-    glEnd
-
+    drawCube(1)
   end
 
 end
