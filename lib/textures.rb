@@ -1,33 +1,38 @@
-class Texture
+class Textures
   include Gl, Glu, Glut
 
-  def initialize
-    @textures = [nil]
+  def add textures_hash
+    @hash = textures_hash
   end
 
-  def find path
-    @textures[0] || load(path)
+  def find key
+    @textures[@hash.keys.find_index(key)]
   end
 
-  def load path
-    #file = File.open("textures/#{path}","b")
-    data = File.open("textures/#{path}", "rb") {|io| io.read }
+  def load_all
+    @textures = glGenTextures(@hash.size)
 
-    width = height = 512
+    @hash.each_with_index do |values,index|
+      load(@textures[index],*values[1])
+    end
+  end
 
-    #data = ([0]*4*width*height).pack("f*")
-    @textures = glGenTextures(1) # Create 1 Texture
 
-    glBindTexture(GL_TEXTURE_2D, @textures[0]) # Bind The Texture
+  def load texture, path, width, height
+    glBindTexture(GL_TEXTURE_2D, texture) # Bind The Texture
 
     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE )
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR )
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR )
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT )
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT )
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
-    @textures[0]
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+
+    data = File.open("textures/#{path}","rb") { |io| io.read }
+
+    #glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height, GL_BGR, GL_UNSIGNED_BYTE, data )
+    texture
   end
 
 end

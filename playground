@@ -53,7 +53,7 @@ class SpaceWars < Controller
   end
 
   def on_tick
-    # spaceship.animate
+    spaceship.animate
   end
 
 end
@@ -99,22 +99,48 @@ class Fuselage < View
   def draw
     glMultMatrix(@model.rotation)
 
-    texture = $textures.find('Wood_Box_Texture_by_jackzeenho.bmp')
-    glBindTexture( GL_TEXTURE_2D, texture )
+    glEnable( GL_TEXTURE_2D )
 
+    texture = $window.textures.find(:wooden_box)
+    glBindTexture( GL_TEXTURE_2D, texture )
     glBegin(GL_QUADS)
 
-    glTexCoord(-1,-1,0)
-    glVertex(-1,-1,0)
+    #front
+    glTexCoord(-1.0,-1.0, 1.0); glVertex(-1.0,-1.0, 1.0)
+    glTexCoord(-1.0, 1.0, 1.0); glVertex(-1.0, 1.0, 1.0)
+    glTexCoord( 1.0, 1.0, 1.0); glVertex( 1.0, 1.0, 1.0)
+    glTexCoord( 1.0,-1.0, 1.0); glVertex( 1.0,-1.0, 1.0)
 
-    glTexCoord(-1, 1,0)
-    glVertex(-1, 1,0)
 
-    glTexCoord( 1, 1,0)
-    glVertex( 1, 1,0)
+    #back
+    glTexCoord(-1.0,-1.0,-1.0); glVertex(-1.0,-1.0,-1.0)
+    glTexCoord(-1.0, 1.0,-1.0); glVertex(-1.0, 1.0,-1.0)
+    glTexCoord( 1.0, 1.0,-1.0); glVertex( 1.0, 1.0,-1.0)
+    glTexCoord( 1.0,-1.0,-1.0); glVertex( 1.0,-1.0,-1.0)
 
-    glTexCoord( 1,-1,0)
-    glVertex( 1,-1,0)
+    #top
+    glTexCoord(-1.0, 1.0,-1.0); glVertex(-1.0, 1.0,-1.0)
+    glTexCoord(-1.0, 1.0, 1.0); glVertex(-1.0, 1.0, 1.0)
+    glTexCoord( 1.0, 1.0, 1.0); glVertex( 1.0, 1.0, 1.0)
+    glTexCoord( 1.0, 1.0,-1.0); glVertex( 1.0, 1.0,-1.0)
+
+    #bottom
+    glTexCoord(-1.0,-1.0,-1.0); glVertex(-1.0,-1.0,-1.0)
+    glTexCoord(-1.0,-1.0, 1.0); glVertex(-1.0,-1.0, 1.0)
+    glTexCoord( 1.0,-1.0, 1.0); glVertex( 1.0,-1.0, 1.0)
+    glTexCoord( 1.0,-1.0,-1.0); glVertex( 1.0,-1.0,-1.0)
+
+    #left
+    glTexCoord(-1.0,-1.0,-1.0); glVertex(-1.0,-1.0,-1.0)
+    glTexCoord(-1.0,-1.0, 1.0); glVertex(-1.0,-1.0, 1.0)
+    glTexCoord(-1.0, 1.0, 1.0); glVertex(-1.0, 1.0, 1.0)
+    glTexCoord(-1.0, 1.0,-1.0); glVertex(-1.0, 1.0,-1.0)
+
+    #right
+    glTexCoord( 1.0,-1.0,-1.0); glVertex( 1.0,-1.0,-1.0)
+    glTexCoord( 1.0,-1.0, 1.0); glVertex( 1.0,-1.0, 1.0)
+    glTexCoord( 1.0, 1.0, 1.0); glVertex( 1.0, 1.0, 1.0)
+    glTexCoord( 1.0, 1.0,-1.0); glVertex( 1.0, 1.0,-1.0)
 
     glEnd
   end
@@ -165,11 +191,20 @@ end
 
 space_wars = SpaceWars.new
 window = Window.new(space_wars)
-$textures = Texture.new
+textures = {
+  :wooden_box => ['Wood_Box_Texture_by_jackzeenho.bmp',512,512]
+}
 
-$camera = Camera.new(-2)
+window.textures.add(textures)
+
+$camera = Camera.new(-4)
 
 window.views << CameraView.new($camera)
 window.views << Fuselage.new(space_wars.spaceship)
+
+$window = window
+
+#not sure where textures should be loaded. For one they _must_ be loaded after the window is generated.
+#Perhaps a model should have his own stack of textures. But Im not sure if GenTextures can be called multiple times without wiping the stack.
 
 window.start
