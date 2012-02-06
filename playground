@@ -107,7 +107,7 @@ end
 
 class Camera
 
-  def initialize zoom = 0
+  def initialize(zoom = 0)
     @zoom = zoom
   end
 
