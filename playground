@@ -155,8 +155,11 @@ class Fuselage < View
   def draw
     glMultMatrix(@model.rotation)
 
-    glColor(1, 0, 0)
-    glutSolidCube @model.size
+    texture = $window.textures.find(:wooden_box)
+    glEnable( GL_TEXTURE_2D )
+    glBindTexture( GL_TEXTURE_2D, texture )
+    glBegin(GL_QUADS)
+    drawCube(1)
   end
 
 end
@@ -205,10 +208,20 @@ end
 
 space_wars = SpaceWars.new
 window = Window.new(space_wars)
+textures = {
+  :wooden_box => ['Wood_Box_Texture_by_jackzeenho.bmp',512,512]
+}
 
-$camera = Camera.new(-2)
+window.textures.add(textures)
+
+$camera = Camera.new(-4)
 
 window.views << CameraView.new($camera)
 window.views << Fuselage.new(space_wars.spaceship)
+
+$window = window
+
+#not sure where textures should be loaded. For one they _must_ be loaded after the window is generated.
+#Perhaps a model should have his own stack of textures. But Im not sure if GenTextures can be called multiple times without wiping the stack.
 
 window.start

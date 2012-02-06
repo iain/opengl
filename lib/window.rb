@@ -1,11 +1,12 @@
 class Window
   include Gl, Glu, Glut
 
-  attr_reader :controller
+  attr_reader :controller, :textures
   attr_accessor :width, :height, :title
 
   def initialize(controller)
     @controller = controller
+    @textures = Textures.new
     controller.window = self
     default_values!
   end
@@ -66,15 +67,29 @@ class Window
     glDepthFunc(GL_LESS)
     glEnable(GL_DEPTH_TEST)
     glShadeModel(GL_SMOOTH)
+    #glEnable( GL_CULL_FACE )
+
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
+
+    glEnable(GL_COLOR_MATERIAL)
+
+    #lighting and lighting position _Abstraction would be nice...
     glEnable(GL_LIGHTING)
     glEnable(GL_LIGHT0)
-    glEnable(GL_COLOR_MATERIAL)
+    glEnable(GL_LIGHT1)
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, [1, 1, 1])
+    glLightfv(GL_LIGHT1, GL_AMBIENT, [1, 1, 1])
+    glLightfv(GL_LIGHT0, GL_POSITION, [0, 2, 0, 0])
+
+
 
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity
 
     gluPerspective(45, 1, 0.1, 10000) #aspect ratio
     glMatrixMode(GL_MODELVIEW)
+
+    textures.load_all
 
     start_timer
     glutDisplayFunc method(:display).to_proc
