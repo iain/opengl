@@ -78,11 +78,11 @@ class Spaceship
   end
 
   def turn_left
-    rotator.roll!(0.1)
+    rotator.roll!(-0.1)
   end
 
   def turn_right
-    rotator.roll!(-0.1)
+    rotator.roll!(0.1)
   end
 
   def turn_up
