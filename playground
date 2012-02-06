@@ -128,7 +128,6 @@ class Camera
   end
 
   def rotation
-    rotator.matrix.inverse
     rotator.matrix + rotator.translate(0, 0, @zoom)
   end
 
