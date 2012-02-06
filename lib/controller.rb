@@ -40,12 +40,16 @@ class Controller
 
   attr_accessor :window
 
-  def apply
+  def fire_events
+    call_callbacks
+    on_tick
+  end
+
+  def call_callbacks
     keys.each do |key|
       callback = callbacks[key]
       instance_eval(&callback) if callback
     end
-    on_tick
   end
 
 end
