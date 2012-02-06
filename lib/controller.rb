@@ -38,6 +38,8 @@ class Controller
     # no op
   end
 
+  attr_accessor :window
+
   def apply
     keys.each do |key|
       callback = callbacks[key]

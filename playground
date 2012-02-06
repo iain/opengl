@@ -44,6 +44,14 @@ class SpaceWars < Controller
     $camera.roll( 0.1)
   end
 
+  on "f" do
+    window.enter_full_screen
+  end
+
+  on "F" do
+    window.leave_full_screen
+  end
+
   on "q" do
     exit
   end
