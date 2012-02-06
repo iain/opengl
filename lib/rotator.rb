@@ -8,6 +8,10 @@ class Rotator
   attr_accessor :matrix
 
   def initialize
+    reset
+  end
+
+  def reset
     self.matrix = yaw(0) * roll(0) * pitch(0)
   end
 

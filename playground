@@ -5,19 +5,31 @@ require 'environment'
 class SpaceWars < Controller
 
   on "w" do
-    spaceship.turn_up
+    spaceship.pitch_left
   end
 
   on "s" do
-    spaceship.turn_down
+    spaceship.pitch_right
   end
 
   on "a" do
-    spaceship.turn_left
+    spaceship.roll_left
   end
 
   on "d" do
-    spaceship.turn_right
+    spaceship.roll_right
+  end
+
+  on "z" do
+    spaceship.yaw_left
+  end
+
+  on "c" do
+    spaceship.yaw_right
+  end
+
+  on "x" do
+    spaceship.reset_rotation
   end
 
   on "=" do
@@ -61,7 +73,7 @@ class SpaceWars < Controller
   end
 
   def on_tick
-    # spaceship.animate
+    spaceship.animate
   end
 
 end
@@ -85,20 +97,32 @@ class Spaceship
     rotator.matrix
   end
 
-  def turn_left
+  def roll_left
     rotator.roll!(-0.1)
   end
 
-  def turn_right
+  def roll_right
     rotator.roll!(0.1)
   end
 
-  def turn_up
+  def pitch_left
     rotator.pitch!(-0.1)
   end
 
-  def turn_down
+  def pitch_right
     rotator.pitch!(0.1)
+  end
+
+  def yaw_left
+    rotator.yaw!(-0.1)
+  end
+
+  def yaw_right
+    rotator.yaw!(0.1)
+  end
+
+  def reset_rotation
+    rotator.reset
   end
 
   private
