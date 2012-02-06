@@ -80,6 +80,10 @@ class SpaceWars < Controller
     @spaceship ||= Spaceship.new
   end
 
+  def grid
+    @grid ||= Grid.new
+  end
+
   def on_tick
     spaceship.animate
   end
@@ -206,6 +210,68 @@ class CameraView < View
 
 end
 
+class Grid
+  include Magick
+
+  attr_accessor :data
+
+  def initialize
+    @width      = 0
+    @height     = 0
+    self.data   = []
+
+    load_world
+  end
+
+  def width
+    @width
+  end
+
+  def height
+    @height
+  end
+
+  def load_world
+    world = ImageList.new('world.bmp')
+
+    @width  = world.rows
+    @height = world.columns
+
+    data = world.view(0,0,@height,@width)
+    @width.times do |width|
+      self.data << @height.times.map do |height|
+        [
+          ((data[width][height].red)/257),
+          ((data[width][height].green)/257),
+          ((data[width][height].blue)/257)
+        ]
+      end
+    end
+  end
+end
+
+class GridView < View
+  def draw!
+    @model.width.times do |x|
+      @model.height.times do |y|
+        drawField((x - 64).round, (y -64).round, @model.data[x][y])
+      end
+    end
+  end
+
+  def drawField x, z, color
+    field_size = 0.5
+    glColor(*color)
+    glBegin(GL_QUADS)
+    glVertex(-0.5 + x, 0, 0.5 + z)
+    glVertex(-0.5 + x, 0,-0.5 + z)
+    glVertex( 0.5 + x, 0,-0.5 + z)
+    glVertex( 0.5 + x, 0, 0.5 + z)
+    glEnd
+  end
+
+end
+
 space_wars = SpaceWars.new
 window = Window.new(space_wars)
 textures = {
@@ -217,6 +283,7 @@ window.textures.add(textures)
 $camera = Camera.new(-4)
 
 window.views << CameraView.new($camera)
+window.views << GridView.new(space_wars.grid)
 window.views << Fuselage.new(space_wars.spaceship)
 
 $window = window
