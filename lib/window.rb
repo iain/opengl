@@ -41,9 +41,15 @@ class Window
     glDepthFunc(GL_LESS)
     glEnable(GL_DEPTH_TEST)
     glShadeModel(GL_SMOOTH)
+    #glEnable( GL_CULL_FACE )
+
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL)
+
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
+
     glEnable(GL_LIGHTING)
     glEnable(GL_LIGHT0)
-    glEnable(GL_COLOR_MATERIAL)
+    #glEnable(GL_COLOR_MATERIAL)
 
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity

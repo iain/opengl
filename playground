@@ -53,7 +53,7 @@ class SpaceWars < Controller
   end
 
   def on_tick
-    spaceship.animate
+    # spaceship.animate
   end
 
 end
@@ -99,8 +99,24 @@ class Fuselage < View
   def draw
     glMultMatrix(@model.rotation)
 
-    glColor(1, 0, 0)
-    glutSolidTeapot @model.size
+    texture = $textures.find('Wood_Box_Texture_by_jackzeenho.bmp')
+    glBindTexture( GL_TEXTURE_2D, texture )
+
+    glBegin(GL_QUADS)
+
+    glTexCoord(-1,-1,0)
+    glVertex(-1,-1,0)
+
+    glTexCoord(-1, 1,0)
+    glVertex(-1, 1,0)
+
+    glTexCoord( 1, 1,0)
+    glVertex( 1, 1,0)
+
+    glTexCoord( 1,-1,0)
+    glVertex( 1,-1,0)
+
+    glEnd
   end
 
 end
@@ -149,6 +165,7 @@ end
 
 space_wars = SpaceWars.new
 window = Window.new(space_wars)
+$textures = Texture.new
 
 $camera = Camera.new(-2)
 
