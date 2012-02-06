@@ -41,6 +41,8 @@ class Window
     glDepthFunc(GL_LESS)
     glEnable(GL_DEPTH_TEST)
     glShadeModel(GL_SMOOTH)
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
 
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity
