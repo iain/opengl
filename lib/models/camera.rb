@@ -15,7 +15,7 @@ class Camera
   end
 
   def roll(r)
-    rotation.matrix *= rotation.roll(r)
+    rotation.roll!(r)
   end
 
   def pitch(r)

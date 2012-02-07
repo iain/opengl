@@ -106,7 +106,7 @@ textures = {
 window.textures.add(textures)
 
 $camera = Camera.new(-50)
-$camera.pitch(Math::PI/2)
+$camera.pitch(-Math::PI*2.25)
 
 window.views << CameraView.new($camera)
 window.views << GridView.new(space_wars.grid)
