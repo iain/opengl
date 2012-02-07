@@ -53,6 +53,24 @@ class Window
     glutReshapeWindow(width, height)
   end
 
+  def lighting
+    #lighting and lighting position _Abstraction would be nice...
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+    glEnable(GL_LIGHT1)
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, [1, 1, 1])
+    glLightfv(GL_LIGHT1, GL_AMBIENT, [1, 1, 1])
+    glLightfv(GL_LIGHT0, GL_POSITION, [0, 2, 0, 0])
+  end
+
+  def fog
+    glEnable(GL_FOG)
+    glFogi(GL_FOG_MODE, GL_EXP2)
+    glFogfv(GL_FOG_COLOR, [0.5,0.5,0.5,1.0])
+    glFogf(GL_FOG_DENSITY, 0.005)
+    glHint(GL_FOG_HINT, GL_NICEST)
+  end
+
   def reshape(width, height)
     glViewport 0, 0, width, height
     glMatrixMode(GL_PROJECTION)
@@ -74,17 +92,12 @@ class Window
     glShadeModel(GL_SMOOTH)
     #glEnable( GL_CULL_FACE )
 
+    lighting
+    fog
+
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
 
     glEnable(GL_COLOR_MATERIAL)
-
-    #lighting and lighting position _Abstraction would be nice...
-    glEnable(GL_LIGHTING)
-    glEnable(GL_LIGHT0)
-    glEnable(GL_LIGHT1)
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, [1, 1, 1])
-    glLightfv(GL_LIGHT1, GL_AMBIENT, [1, 1, 1])
-    glLightfv(GL_LIGHT0, GL_POSITION, [0, 2, 0, 0])
 
 
     glMatrixMode(GL_PROJECTION)

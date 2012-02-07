@@ -18,6 +18,12 @@ class GridView < View
       show_field(*info)
       glPopMatrix
     end
+
+    drawSky
+  end
+
+  def drawSky
+    glutSolidSphere(1280/2,36,36)
   end
 
   def set_buffers
@@ -84,6 +90,7 @@ class GridView < View
     field_size = 10.0
 
     x *= 2*field_size
+    y -= 20
     z *= 2*field_size
 
     glTranslate(x,y,z)
