@@ -5,14 +5,14 @@ class GridView < View
     end
   end
 
-  def drawField x, z, color
+  def drawField x, y, z, color
     field_size = 0.5
     glColor(*color)
     glBegin(GL_QUADS)
-    glVertex(-field_size + x, 0, field_size + z)
-    glVertex(-field_size + x, 0,-field_size + z)
-    glVertex( field_size + x, 0,-field_size + z)
-    glVertex( field_size + x, 0, field_size + z)
+    glVertex(-field_size + x, y, field_size + z)
+    glVertex(-field_size + x, y,-field_size + z)
+    glVertex( field_size + x, y,-field_size + z)
+    glVertex( field_size + x, y, field_size + z)
     glEnd
   end
 
