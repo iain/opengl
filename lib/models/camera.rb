@@ -7,11 +7,11 @@ class Camera
   end
 
   def zoom_in
-    @zoom += 0.1
+    @zoom *= 0.9
   end
 
   def zoom_out
-    @zoom -= 0.1
+    @zoom *= 1.1
   end
 
   def roll(r)
