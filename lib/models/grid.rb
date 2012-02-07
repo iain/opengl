@@ -34,9 +34,9 @@ class Grid
           (data[width][height].opacity/6553.5.round),
           height - @height/2,
           [
-            ((data[width][height].red)/65535),
-            ((data[width][height].green)/65535),
-            ((data[width][height].blue)/65535)
+            ((data[width][height].red)/257),
+            ((data[width][height].green)/257),
+            ((data[width][height].blue)/257)
           ]
         ]
       end
