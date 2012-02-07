@@ -31,7 +31,7 @@ class Grid
       @width.times do |height|
         self.data << [
           width - @width/2,
-          (data[width][height].opacity/6553.5.round),
+          (data[width][height].opacity/6553.5.round) + 1,
           height - @height/2,
           [
             ((data[width][height].red)/65535),
