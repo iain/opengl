@@ -175,11 +175,11 @@ class Camera
   end
 
   def zoom_in
-    @zoom += 0.1
+    @zoom += 0.5
   end
 
   def zoom_out
-    @zoom -= 0.1
+    @zoom -= 0.5
   end
 
   def roll(r)
@@ -232,18 +232,22 @@ class Grid
   end
 
   def load_world
-    world = ImageList.new('world.bmp')
+    world = ImageList.new('world.png')
 
     @width  = world.rows
     @height = world.columns
 
     data = world.view(0,0,@height,@width)
-    @width.times do |width|
-      self.data << @height.times.map do |height|
-        [
-          ((data[width][height].red)/257),
-          ((data[width][height].green)/257),
-          ((data[width][height].blue)/257)
+    @height.times do |width|
+      @width.times do |height|
+        self.data << [
+          width - 64,
+          height - 64,
+          [
+            ((data[width][height].red)/65535),
+            ((data[width][height].green)/65535),
+            ((data[width][height].blue)/65535)
+          ]
         ]
       end
     end
@@ -252,10 +256,8 @@ end
 
 class GridView < View
   def draw!
-    @model.width.times do |x|
-      @model.height.times do |y|
-        drawField((x - 64).round, (y -64).round, @model.data[x][y])
-      end
+    @model.data.each do |info|
+      drawField(*info)
     end
   end
 
@@ -280,11 +282,13 @@ textures = {
 
 window.textures.add(textures)
 
-$camera = Camera.new(-4)
+$camera = Camera.new(-25)
+$camera.pitch(Math::PI/2)
+$camera.roll(-Math::PI/2)
 
 window.views << CameraView.new($camera)
 window.views << GridView.new(space_wars.grid)
-window.views << Fuselage.new(space_wars.spaceship)
+#window.views << Fuselage.new(space_wars.spaceship)
 
 $window = window
 
