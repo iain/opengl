@@ -19,12 +19,31 @@ class GridView < View
   end
 
   def set_buffers
+    @colours = glGenBuffers(@model.data.size)
+
+    #set colour
+
+    colors = [
+      0.0,0.9,0.0,
+      0.0,0.9,0.0,
+      0.0,0.7,0.0,
+      0.0,0.5,0.0,
+      0.0,0.0,0.0,
+      0.0,0.0,0.0,
+      0.0,0.0,0.0,
+      0.0,0.0,0.0
+    ]
+
+    glBindBuffer(GL_ARRAY_BUFFER_ARB, @colours[0])
+    glBufferData(GL_ARRAY_BUFFER, 6*8*3, colors.pack("f*"), GL_STREAM_DRAW);
+
+
     @buffers = glGenBuffers(@model.data.size)
 
+    #set position
     @model.data.each_with_index do |info, index|
       x, y, z, color = info
 
-      #set position
       glBindBuffer(GL_ARRAY_BUFFER_ARB, @buffers[index])
 
       field_size = 10.0
@@ -44,10 +63,6 @@ class GridView < View
       ].pack("f*")
 
       glBufferData(GL_ARRAY_BUFFER, 6*8*3, vertices,GL_DYNAMIC_DRAW)
-
-      #set colour
-      # glBindBuffer(GL_ARRAY_BUFFER_ARB, @buffers[(index*2) + 1])
-      # glBufferData(GL_ARRAY_BUFFER, 6*8*3, color.pack("f*"), GL_STREAM_DRAW);
 
     end
   end
@@ -77,23 +92,13 @@ class GridView < View
     glEnableClientState(GL_VERTEX_ARRAY)
     glVertexPointer(3, GL_FLOAT, 0, 0)
 
-    colors = [
-      0.0,0.9,0.0,
-      0.0,0.9,0.0,
-      0.0,0.7,0.0,
-      0.0,0.5,0.0,
-      0.0,0.0,0.0,
-      0.0,0.0,0.0,
-      0.0,0.0,0.0,
-      0.0,0.0,0.0
-    ]
-
+    glBindBuffer(GL_ARRAY_BUFFER, @colours[0])
     glEnableClientState(GL_COLOR_ARRAY)
-    glBindBuffer(GL_ARRAY_BUFFER, 0)
-    glColorPointer(3, GL_FLOAT, 0, colors)
+    glColorPointer(3, GL_FLOAT, 0, 0)
 
     glDrawElements(GL_QUADS, 24, GL_UNSIGNED_BYTE, indices)
 
+    glBindBuffer(GL_ARRAY_BUFFER, 0)
 
     glDisableClientState(GL_COLOR_ARRAY)
     glDisableClientState(GL_VERTEX_ARRAY)
