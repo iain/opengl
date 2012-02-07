@@ -87,7 +87,7 @@ class SpaceWars < Controller
   end
 
   def grid
-    @grid ||= Grid.new
+    @grid ||= Grid.new('world.bmp')
   end
 
   def on_tick
@@ -107,7 +107,6 @@ window.textures.add(textures)
 
 $camera = Camera.new(-50)
 $camera.pitch(Math::PI/2)
-$camera.roll(-Math::PI/2)
 
 window.views << CameraView.new($camera)
 window.views << GridView.new(space_wars.grid)

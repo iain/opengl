@@ -3,7 +3,8 @@ class Grid
 
   attr_accessor :data
 
-  def initialize
+  def initialize path
+    @path = path
     @width      = 0
     @height     = 0
     self.data   = []
@@ -20,7 +21,7 @@ class Grid
   end
 
   def load_world
-    world = ImageList.new('world.png')
+    world = ImageList.new(@path)
 
     @width  = world.rows
     @height = world.columns
@@ -29,9 +30,9 @@ class Grid
     @height.times do |width|
       @width.times do |height|
         self.data << [
-          width - 64,
-          (data[width][height].opacity/13107.round),
-          height - 64,
+          width - @width/2,
+          (data[width][height].opacity/6553.5.round),
+          height - @height/2,
           [
             ((data[width][height].red)/65535),
             ((data[width][height].green)/65535),

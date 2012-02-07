@@ -10,10 +10,10 @@ class World
 
   def generate
     a = (@width * @height).times.map do
-        [ Random.rand(1.0), Random.rand(1.0), Random.rand(1.0)]
+        [ 0.0, Random.rand(0.8) + 0.2, 0.0,Random.rand(1.0)]
     end
     a = a.flatten
-    @bitmap = Image.constitute(@width,@height,"RGB",a)
+    @bitmap = Image.constitute(@width,@height,"RGBA",a)
   end
 
   def show
@@ -26,7 +26,7 @@ class World
   end
 end
 
-generator = World.new(128,128)
+generator = World.new(64,64)
 generator.generate
 generator.save
 
