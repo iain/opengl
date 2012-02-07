@@ -13,13 +13,15 @@ class GridView < View
   def draw!
     set_buffers if buffered?
 
-    @model.data.size.times do |i|
-      show_field(i)
+    @model.data.each do |info|
+      glPushMatrix
+      show_field(*info)
+      glPopMatrix
     end
   end
 
   def set_buffers
-    @colours = glGenBuffers(@model.data.size)
+    @colours = glGenBuffers(1)
 
     #set colour
 
@@ -38,36 +40,28 @@ class GridView < View
     glBufferData(GL_ARRAY_BUFFER, 6*8*3, colors.pack("f*"), GL_STREAM_DRAW);
 
 
-    @buffers = glGenBuffers(@model.data.size)
+    @buffers = glGenBuffers(1)
 
-    #set position
-    @model.data.each_with_index do |info, index|
-      x, y, z, color = info
 
-      glBindBuffer(GL_ARRAY_BUFFER_ARB, @buffers[index])
+    glBindBuffer(GL_ARRAY_BUFFER_ARB, @buffers[0])
 
-      field_size = 10.0
+    field_size = 10.0
 
-      x *= 2*field_size
-      z *= 2*field_size
+    vertices = [
+       -field_size, 3, +field_size,
+       -field_size, 3, -field_size,
+       +field_size, 3, -field_size,
+       +field_size, 3, +field_size,
+       -field_size, 0, +field_size,
+       +field_size, 0, +field_size,
+       +field_size, 0, -field_size,
+       -field_size, 0, -field_size
+    ].pack("f*")
 
-      vertices = [
-         x - field_size, y, z + field_size,
-         x - field_size, y, z - field_size,
-         x + field_size, y, z - field_size,
-         x + field_size, y, z + field_size,
-         x - field_size, 0, z + field_size,
-         x + field_size, 0, z + field_size,
-         x + field_size, 0, z - field_size,
-         x - field_size, 0, z - field_size
-      ].pack("f*")
-
-      glBufferData(GL_ARRAY_BUFFER, 6*8*3, vertices,GL_DYNAMIC_DRAW)
-
-    end
+    glBufferData(GL_ARRAY_BUFFER, 6*8*3, vertices,GL_DYNAMIC_DRAW)
   end
 
-  def show_field id
+  def show_field x, y, z, color
 
     #    1-----2
     #   /|    /|
@@ -87,8 +81,14 @@ class GridView < View
         7, 6, 2, 1,
         4, 5, 3, 0
       ]
+    field_size = 10.0
 
-    glBindBuffer(GL_ARRAY_BUFFER, @buffers[id])
+    x *= 2*field_size
+    z *= 2*field_size
+
+    glTranslate(x,y,z)
+
+    glBindBuffer(GL_ARRAY_BUFFER, @buffers[0])
     glEnableClientState(GL_VERTEX_ARRAY)
     glVertexPointer(3, GL_FLOAT, 0, 0)
 
