@@ -2,7 +2,7 @@ class Window
   include Gl, Glu, Glut
 
   attr_reader :controller, :textures
-  attr_accessor :width, :height, :title
+  attr_accessor :width, :height, :title, :framerate
 
   def initialize(controller)
     @controller = controller
@@ -12,6 +12,7 @@ class Window
   end
 
   def default_values!
+    self.framerate = 60
     self.width = 700
     self.height = 450
     self.title = "Ruby OpenGL"
@@ -22,7 +23,11 @@ class Window
   end
 
   def display
-    controller.apply
+    controller.fire_events
+    redraw
+  end
+
+  def redraw
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glLoadIdentity
     views.each do |view|
@@ -37,7 +42,7 @@ class Window
   end
 
   def start_timer
-    glutTimerFunc 33, method(:timer).to_proc, nil
+    glutTimerFunc 1000 / framerate, method(:timer).to_proc, nil
   end
 
   def enter_full_screen
@@ -82,16 +87,16 @@ class Window
     glLightfv(GL_LIGHT0, GL_POSITION, [0, 2, 0, 0])
 
 
-
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity
 
-    gluPerspective(45, 1, 0.1, 10000) #aspect ratio
+    gluPerspective(45, 1, 0.1, 1000) #aspect ratio
     glMatrixMode(GL_MODELVIEW)
 
     textures.load_all
 
     start_timer
+
     glutDisplayFunc method(:display).to_proc
     glutReshapeFunc method(:reshape).to_proc
 
