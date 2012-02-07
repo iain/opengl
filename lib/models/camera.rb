@@ -15,11 +15,11 @@ class Camera
   end
 
   def roll(r)
-    rotation.roll!(r)
+    rotation.matrix *= rotation.roll(r)
   end
 
   def pitch(r)
-    rotation.pitch!(r)
+    rotation.matrix *= rotation.pitch(r)
   end
 
   # Change the matrix to allow for zooming
