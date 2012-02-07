@@ -52,6 +52,7 @@ class GridView < View
 
     glVertexPointer(3, GL_FLOAT, 0, vertices)
 
+    glColor(0.3,0.3,0.8)
     glDrawElements(GL_QUADS, 24, GL_UNSIGNED_BYTE, indices)
 
     glBindBuffer(GL_ARRAY_BUFFER, 0)

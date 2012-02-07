@@ -67,7 +67,7 @@ class Window
     glEnable(GL_FOG)
     glFogi(GL_FOG_MODE, GL_EXP2)
     glFogfv(GL_FOG_COLOR, [0.5,0.5,0.5,1.0])
-    glFogf(GL_FOG_DENSITY, 0.005)
+    glFogf(GL_FOG_DENSITY, 0.0005)
     glHint(GL_FOG_HINT, GL_NICEST)
   end
 
@@ -75,7 +75,7 @@ class Window
     glViewport 0, 0, width, height
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity
-    gluPerspective(45, width / height, 0.1, 1000)
+    gluPerspective(45, width / height, 0.1, 2000)
     glMatrixMode(GL_MODELVIEW)
   end
 
@@ -103,7 +103,7 @@ class Window
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity
 
-    gluPerspective(45, 1, 0.1, 1000) #aspect ratio
+    gluPerspective(45, 1, 0.1, 2000) #aspect ratio
     glMatrixMode(GL_MODELVIEW)
 
     textures.load_all
