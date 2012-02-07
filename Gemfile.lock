@@ -25,7 +25,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-<<<<<<< HEAD
   fuubar
   mkrf
   rake
