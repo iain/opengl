@@ -5,6 +5,8 @@ require 'environment'
 require 'models/spaceship'
 require 'views/fuselage'
 
+require 'socket'
+
 class SpaceWars < Controller
 
   on "w" do
@@ -85,6 +87,8 @@ class SpaceWars < Controller
 
   def on_tick
     spaceship.animate
+
+    #spaceship.send_to_server!
   end
 
 end
@@ -94,6 +98,7 @@ space_wars = SpaceWars.new
 window = Window.new(space_wars)
 
 $camera = Camera.new(-2)
+$connection = TCPSocket.new("192.168.0.102",31337)
 
 window.views << CameraView.new($camera)
 window.views << Fuselage.new(space_wars.spaceship)
