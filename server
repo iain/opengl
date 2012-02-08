@@ -18,9 +18,14 @@ loop do
     while(line = s.gets)
       command, info = line.split(': ')
       info.chomp!
+      if command == "get"
+        p @client_matrix
+        requested_id = @client_names.index(info)
+        s.puts @client_matrix[requested_id]
+      end
 
       @client_matrix << info               if command == "matrix"
-      @client_names[client_number] = info  if command == "set_name"
+      p @client_names[client_number] = info  if command == "set_name"
 
       if command == "request"
         s.puts @client_matrix[client_number] if info == "matrix"

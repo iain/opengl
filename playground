@@ -92,13 +92,19 @@ class SpaceWars < Controller
     exit
   end
 
+  on "b" do
+    $player_shuttlers.each do |id, player|
+      $connection.puts "get: #{id}"
+      player.set_matrix(eval($connection.gets))
+    end
+  end
+
   def spaceship
     @spaceship ||= Spaceship.new
   end
 
   def on_tick
     spaceship.animate
-
     #spaceship.send_to_server!
   end
 
@@ -110,10 +116,24 @@ window = Window.new(space_wars)
 
 $camera = Camera.new(-2)
 
+player_name = "Peter"
+
 $connection = TCPSocket.new("192.168.0.101",31337)
-$connection.puts "set_name: Pronald"
+$connection.puts "set_name: #{player_name}"
+$connection.puts "request: players"
 
 window.views << CameraView.new($camera)
 window.views << Fuselage.new(space_wars.spaceship)
+
+players = eval($connection.gets)
+$player_shuttlers = {}
+players.delete(player_name)
+players.each do |player|
+  new_ship = Spaceship.new
+  $player_shuttlers[player.to_sym] = new_ship
+  window.views << Fuselage.new(new_ship)
+end
+
+
 
 window.start
