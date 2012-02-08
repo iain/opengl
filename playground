@@ -11,9 +11,13 @@ class SpaceWars < Controller
 
   on "m" do
     $connection.puts "request: matrix"
-    p new_matrix = eval($connection.gets)
-    p spaceship.matrix
+    new_matrix = eval($connection.gets)
     spaceship.set_matrix(new_matrix)
+  end
+
+  on "n" do
+    $connection.puts "request: players"
+    puts $connection.gets
   end
 
   on "w" do
@@ -107,6 +111,7 @@ window = Window.new(space_wars)
 $camera = Camera.new(-2)
 
 $connection = TCPSocket.new("192.168.0.101",31337)
+$connection.puts "set_name: Pronald"
 
 window.views << CameraView.new($camera)
 window.views << Fuselage.new(space_wars.spaceship)

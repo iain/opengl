@@ -7,6 +7,8 @@ dts = TCPServer.new('192.168.0.101', 31337)
 Thread.abort_on_exception=true
 
 @clients = []
+@client_names = []
+
 @client_matrix = []
 loop do
   Thread.start(dts.accept) do |s|
@@ -15,11 +17,15 @@ loop do
 
     while(line = s.gets)
       command, info = line.split(': ')
-      info.chomp
+      info.chomp!
 
-      @client_matrix << info if command == "matrix"
-      s.puts @client_matrix[client_number] if command == "request"
-      p @client_matrix[client_number]
+      @client_matrix << info               if command == "matrix"
+      @client_names[client_number] = info  if command == "set_name"
+
+      if command == "request"
+        s.puts @client_matrix[client_number] if info == "matrix"
+        s.puts "#{@client_names}"            if info == "players"
+      end
     end
 
     s.close
