@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby -I lib -w
+
+require 'socket'
+
+dts = TCPServer.new('192.168.0.101', 31337)
+
+Thread.abort_on_exception=true
+
+@clients = []
+@client_matrix = []
+loop do
+  Thread.start(dts.accept) do |s|
+    client_number = @clients.size
+    @clients << s
+
+    while(line = s.gets)
+      command, info = line.split(': ')
+      info.chomp
+
+      @client_matrix << info if command == "matrix"
+      s.puts @client_matrix[client_number] if command == "request"
+      p @client_matrix[client_number]
+    end
+
+    s.close
+  end
+end

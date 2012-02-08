@@ -51,7 +51,7 @@ class Spaceship
   end
 
   def send_to_server!
-    $connection.puts rotation.matrix
+    $connection.puts "matrix: #{rotation.matrix}"
   end
 
 end

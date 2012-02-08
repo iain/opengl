@@ -10,6 +10,11 @@ module Rotation
     rotation.matrix
   end
 
+  def set_matrix matrix
+    rotation.matrix = matrix
+  end
+
+
   class Rotator
 
     M = Matrix
