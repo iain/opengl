@@ -87,10 +87,10 @@ class GridView < View
 
 
     vertices = [
-       -@field_size, 3, +@field_size,
-       -@field_size, 3, -@field_size,
-       +@field_size, 3, -@field_size,
-       +@field_size, 3, +@field_size,
+       -@field_size, @field_size, +@field_size,
+       -@field_size, @field_size, -@field_size,
+       +@field_size, @field_size, -@field_size,
+       +@field_size, @field_size, +@field_size,
        -@field_size, 0, +@field_size,
        +@field_size, 0, +@field_size,
        +@field_size, 0, -@field_size,
