@@ -11,8 +11,7 @@ require 'socket'
 class SpaceWars < Controller
 
   on "m" do
-    $connection.puts "request: matrix"
-    new_matrix = eval($connection.gets)
+    new_matrix = $connection.request_matrix
     spaceship.set_matrix(new_matrix)
   end
 
@@ -101,18 +100,16 @@ class SpaceWars < Controller
     @spaceship ||= Spaceship.new
   end
 
-  def request_player_locations
+  def get_player_locations
     $player_shuttlers.each do |id, player|
-      $connection.puts "get: #{id}"
-      new_matrix = eval($connection.gets)
+      new_matrix = $connection.get_player_location(id)
       player.class
       player.set_matrix(new_matrix)
     end
   end
 
   def update_player_list
-    $connection.puts "request: players"
-    new_players = eval($connection.gets) - $player_shuttlers.map { |key, info| key.to_s } - [spaceship.name]
+    new_players = $connection.request_players_list - $player_shuttlers.map { |key, info| key.to_s } - [spaceship.name]
 
     new_players.each do |player|
       new_ship = Spaceship.new
@@ -131,7 +128,7 @@ class SpaceWars < Controller
 
     if Time.now.to_f - $last_send > 0.1
       update_player_list
-      request_player_locations
+      get_player_locations
       spaceship.send_to_server!
       $last_send = Time.now.to_f
     end
@@ -141,6 +138,48 @@ end
 
 $last_send = Time.now.to_f
 
+class Connection
+
+  attr_accessor :socket
+
+  def initialize *args
+    @address, @port, @player_name = *args
+    self.socket = TCPSocket.new(@address,@port)
+
+    set_name(@player_name)
+  end
+
+  def send line
+    p socket.class
+    self.socket.puts line
+  end
+
+  def request line
+    send line
+    socket.gets
+  end
+
+  def set_name player_name
+    send("set_name: #{player_name}")
+  end
+
+  def request_players_list
+    eval(request("request: players"))
+  end
+
+  def send_matrix matrix
+    send("matrix: #{matrix}")
+  end
+
+  def get_player_location id
+    eval(request "get: #{id}")
+  end
+
+  def request_matrix
+    request("request: matrix")
+  end
+
+end
 
 space_wars = SpaceWars.new
 
@@ -150,17 +189,16 @@ $camera = Camera.new(-2)
 
 player_name = "Peter"
 address = "localhost"
+port = 31337
 
-$connection = TCPSocket.new(address,31337)
-$connection.puts "set_name: #{player_name}"
-$connection.puts "request: players"
+$connection = Connection.new(address,port,player_name)
 
 window.views << CameraView.new($camera)
 window.views << Fuselage.new(space_wars.spaceship)
 
 space_wars.spaceship.name = player_name
 
-players = eval($connection.gets)
+players = $connection.request_players_list
 $player_shuttlers = {}
 players.delete(player_name)
 players.each do |player|
