@@ -113,6 +113,10 @@ class SpaceWars < Controller
   def on_tick
     spaceship.animate
 
+    $player_shuttlers.each do |id, player|
+      player.animate
+    end
+
     if Time.now.to_f - $last_send > 0.1
       request_player_locations
       spaceship.send_to_server!
