@@ -2,6 +2,8 @@ class Spaceship
 
   include Rotation
 
+  attr_accessor :name
+
   def initialize
     send_to_server!
   end
@@ -52,6 +54,10 @@ class Spaceship
 
   def send_to_server!
     $connection.puts "matrix: #{rotation.matrix}"
+  end
+
+  def set_matrix matrix
+    rotation.set(matrix)
   end
 
 end

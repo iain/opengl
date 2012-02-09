@@ -12,20 +12,28 @@ Thread.abort_on_exception=true
 @client_matrix = []
 loop do
   Thread.start(dts.accept) do |s|
-    client_number = @clients.size
     @clients << s
+
+    client_number = @client_names.size
 
     while(line = s.gets)
       command, info = line.split(': ')
       info.chomp!
+
       if command == "get"
-        p @client_matrix
         requested_id = @client_names.index(info)
         s.puts @client_matrix[requested_id]
       end
 
-      @client_matrix << info               if command == "matrix"
-      p @client_names[client_number] = info  if command == "set_name"
+      if command == "matrix"
+        @client_matrix[client_number]  = info
+        p client_number
+      end
+
+      if command == "set_name"
+        client_number = @client_names.index(info) || @client_names.size
+        @client_names[client_number] = info
+      end
 
       if command == "request"
         s.puts @client_matrix[client_number] if info == "matrix"

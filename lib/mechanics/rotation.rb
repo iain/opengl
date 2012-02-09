@@ -10,9 +10,6 @@ module Rotation
     rotation.matrix
   end
 
-  def set_matrix matrix
-    rotation.matrix = matrix
-  end
 
 
   class Rotator
@@ -21,6 +18,7 @@ module Rotation
     include Math
 
     attr_accessor :matrix
+
 
     def initialize
       reset
@@ -80,6 +78,10 @@ module Rotation
 
     def translate!(x, y, z)
       self.matrix += translate(x, y, z) * matrix
+    end
+
+    def set (matrix)
+      self.matrix = matrix
     end
 
   end
