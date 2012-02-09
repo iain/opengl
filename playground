@@ -110,6 +110,18 @@ class SpaceWars < Controller
     end
   end
 
+  def update_player_list
+    $connection.puts "request: players"
+    new_players = eval($connection.gets) - $player_shuttlers.map { |key, info| key.to_s } - [spaceship.name]
+
+    new_players.each do |player|
+      new_ship = Spaceship.new
+      new_ship.name = player
+      $player_shuttlers[player.to_sym] = new_ship
+      window.views << Fuselage.new(new_ship)
+    end
+  end
+
   def on_tick
     spaceship.animate
 
@@ -118,6 +130,7 @@ class SpaceWars < Controller
     end
 
     if Time.now.to_f - $last_send > 0.1
+      update_player_list
       request_player_locations
       spaceship.send_to_server!
       $last_send = Time.now.to_f
@@ -135,9 +148,10 @@ window = Window.new(space_wars)
 
 $camera = Camera.new(-2)
 
-player_name = "Ronald"
+player_name = "Peter"
+address = "localhost"
 
-$connection = TCPSocket.new("192.168.0.101",31337)
+$connection = TCPSocket.new(address,31337)
 $connection.puts "set_name: #{player_name}"
 $connection.puts "request: players"
 
