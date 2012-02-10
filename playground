@@ -103,7 +103,6 @@ class SpaceWars < Controller
   def get_player_locations
     $player_shuttlers.each do |id, player|
       new_matrix = $connection.get_player_location(id)
-      player.class
       player.set_matrix(new_matrix)
     end
   end
@@ -120,7 +119,9 @@ class SpaceWars < Controller
   end
 
   def on_tick
+    $camera.rotation.matrix = spaceship.rotation.matrix.inverse
     spaceship.animate
+
 
     $player_shuttlers.each do |id, player|
       player.animate
@@ -150,7 +151,6 @@ class Connection
   end
 
   def send line
-    p socket.class
     self.socket.puts line
   end
 
@@ -187,7 +187,7 @@ window = Window.new(space_wars)
 
 $camera = Camera.new(-2)
 
-player_name = "Peter"
+player_name = "Ronald"
 address = "localhost"
 port = 31337
 
