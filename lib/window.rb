@@ -61,7 +61,7 @@ class Window
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity
 
-    gluPerspective(45, 1, 0.1, 1000000) #aspect ratio
+    gluPerspective(45, 1, 0.1, 10000000000) #aspect ratio
     glMatrixMode(GL_MODELVIEW)
 
     textures.load_all
