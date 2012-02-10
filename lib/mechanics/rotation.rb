@@ -1,4 +1,5 @@
 require 'matrix'
+require 'mathn'
 
 module Rotation
 
