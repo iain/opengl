@@ -15,19 +15,19 @@ class Spaceship
   end
 
   def roll_left
-    rotation.roll!(-0.1)
+    rotation.roll!(-0.05)
   end
 
   def roll_right
-    rotation.roll!(0.1)
+    rotation.roll!(0.05)
   end
 
   def yaw_left
-    rotation.yaw!(-0.1)
+    rotation.yaw!(-0.01)
   end
 
   def yaw_right
-    rotation.yaw!(0.1)
+    rotation.yaw!(0.01)
   end
 
   def reset_rotation
@@ -35,21 +35,21 @@ class Spaceship
   end
 
   def pitch_down
-    rotation.pitch!( 0.1)
+    rotation.pitch!( 0.01)
   end
 
   def pitch_up
-    rotation.pitch!(-0.1)
+    rotation.pitch!(-0.01)
   end
 
   def accelerate
-    rotation.translate!(0,0,0.1)
+    rotation.translate!(0,0,-0.1)
 
     send_to_server!
   end
 
   def brake
-    rotation.translate!(0,0,-0.1)
+    rotation.translate!(0,0, 0.1)
   end
 
   def send_to_server!
