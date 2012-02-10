@@ -119,6 +119,17 @@ describe Rotation do
         )
       end
 
+      it "rotates after it moved" do
+        subject.translate! 1, 0, 0
+        subject.roll! Math::PI / 2
+        subject.matrix.should be_matrix_like(
+          [  0, 0, 1, 0 ],
+          [  0, 1, 0, 0 ],
+          [ -1, 0, 0, 0 ],
+          [  1, 0, 0, 1 ]
+        )
+      end
+
     end
 
   end
