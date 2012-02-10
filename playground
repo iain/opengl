@@ -69,8 +69,6 @@ class Spaceship
 
   def animate
     rotator.yaw!(0.01)
-    rotator.pitch!(-0.01)
-    rotator.roll!(0.02)
   end
 
   def rotation
@@ -99,11 +97,18 @@ class Fuselage < View
   def draw
     glMultMatrix(@model.rotation)
 
-    texture = $window.textures.find(:wooden_box)
-    glEnable( GL_TEXTURE_2D )
-    glBindTexture( GL_TEXTURE_2D, texture )
-    glBegin(GL_QUADS)
-    drawCube(1)
+    texture = $window.textures.find(:earth)
+
+    quadro = gluNewQuadric();
+    gluQuadricNormals(quadro, GLU_SMOOTH);
+    gluQuadricTexture(quadro, GL_TRUE);
+    glEnable(GL_TEXTURE_2D);
+
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    gluSphere(quadro, 5000, 48, 48);
+    glDisable(GL_TEXTURE_2D);
+    gluDeleteQuadric(quadro);
   end
 
 end
@@ -115,11 +120,11 @@ class Camera
   end
 
   def zoom_in
-    @zoom += 0.1
+    @zoom *= 0.9
   end
 
   def zoom_out
-    @zoom -= 0.1
+    @zoom *= 1.1
   end
 
   def roll(r)
@@ -153,12 +158,16 @@ end
 space_wars = SpaceWars.new
 window = Window.new(space_wars)
 textures = {
-  :wooden_box => ['Wood_Box_Texture_by_jackzeenho.bmp',512,512]
+  :wooden_box => ['Wood_Box_Texture_by_jackzeenho.bmp',512,512],
+  :jupiter => ['jupitermap.bmp',1024,512],
+  :pluto => ['plutomap.bmp',1000,500],
+  :earth => ['earthmap.bmp',1000,500]
 }
 
 window.textures.add(textures)
 
 $camera = Camera.new(-4)
+$camera.pitch(Math::PI/2)
 
 window.views << CameraView.new($camera)
 window.views << Fuselage.new(space_wars.spaceship)
