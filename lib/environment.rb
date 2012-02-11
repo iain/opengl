@@ -10,3 +10,5 @@ require 'window'
 require 'rotator'
 require 'textures'
 require 'models'
+
+require 'rmagick'

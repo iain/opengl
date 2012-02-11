@@ -97,9 +97,8 @@ class Fuselage < View
   def draw
     glMultMatrix(@model.rotation)
 
-    texture = $window.textures.find(:earth)
+    texture = $window.textures.find(:earthmap)
 
-    glTranslate(5000000,0,0)
     quadro = gluNewQuadric();
     gluQuadricNormals(quadro, GLU_SMOOTH);
     gluQuadricTexture(quadro, GL_TRUE);
@@ -130,7 +129,7 @@ class SunView < View
   def draw
     glMultMatrix(@model.rotation)
 
-    texture = $window.textures.find(:sun)
+    texture = $window.textures.find(:sunmap_bmp)
 
     quadro = gluNewQuadric();
     gluQuadricNormals(quadro, GLU_SMOOTH);
@@ -189,22 +188,13 @@ end
 
 space_wars = SpaceWars.new
 window = Window.new(space_wars)
-textures = {
-  :wooden_box => ['Wood_Box_Texture_by_jackzeenho.bmp',512,512],
-  :jupiter => ['jupitermap.bmp',1024,512],
-  :pluto => ['plutomap.bmp',1000,500],
-  :earth => ['earthmap.bmp',1000,500],
-  :sun => ['sunmap.bmp', 1024,512]
-}
-
-window.textures.add(textures)
 
 $camera = Camera.new(-4)
 $camera.pitch(Math::PI/2)
 
 window.views << CameraView.new($camera)
 window.views << Fuselage.new(space_wars.spaceship)
-window.views << SunView.new(Sun.new)
+# window.views << SunView.new(Sun.new)
 
 $window = window
 

@@ -1,24 +1,40 @@
 class Textures
   include Gl, Glu, Glut
 
-  def add textures_hash
-    @hash = textures_hash
+  def initialize
+    @textures = []
+    @hash     = {}
+
+  end
+
+  def loaded_textures
+    @hash.keys
   end
 
   def find key
-    @textures[@hash.keys.find_index(key)]
-  end
-
-  def load_all
-    @textures = glGenTextures(@hash.size)
-
-    @hash.each_with_index do |values,index|
-      load(@textures[index],*values[1])
+    if @hash[key].nil?
+      raise "No texture loaded with this name"
+    else
+      @textures[@hash[key]]
     end
   end
 
+  def load_all
+    file_names = Dir["textures/*"].map { |file| file if file.split('.').last == 'bmp' }.compact
 
-  def load texture, path, width, height
+    file_names.each_with_index do |f, index|
+      @hash[f.split('/')[1][(0..-5)].gsub('.','_').to_sym] = index
+    end
+
+    @textures = glGenTextures(file_names.size)
+
+    file_names.size.times do |i|
+      image = Magick::Image::read(file_names[i]).first
+      load(@textures[i],image.to_blob,image.rows, image.columns)
+    end
+  end
+
+  def load texture, image_binary, width, height
     glBindTexture(GL_TEXTURE_2D, texture) # Bind The Texture
 
     glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE )
@@ -28,10 +44,8 @@ class Textures
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 
-    data = File.open("textures/#{path}","rb") { |io| io.read }
-
     #glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-    gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height, GL_BGR, GL_UNSIGNED_BYTE, data )
+    gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height, GL_BGR, GL_UNSIGNED_BYTE, image_binary )
     texture
   end
 
