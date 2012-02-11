@@ -93,9 +93,13 @@ space_wars = SpaceWars.new
 
 window = Window.new(space_wars)
 
-$camera = Camera.new(-2)
+$camera = Camera.new( -40)
+$camera.pitch(Math::PI/2)
 
 window.views << CameraView.new($camera)
 window.views << Fuselage.new(space_wars.spaceship)
+# window.views << SunView.new(Sun.new)
+
+$window = window
 
 window.start

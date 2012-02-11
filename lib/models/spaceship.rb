@@ -4,8 +4,6 @@ class Spaceship
 
   def animate
     rotation.yaw!(0.01)
-    rotation.pitch!(-0.01)
-    rotation.roll!(0.02)
   end
 
   def roll_left

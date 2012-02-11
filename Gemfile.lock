@@ -8,6 +8,7 @@ GEM
       ruby-progressbar (~> 0.0.10)
     mkrf (0.2.3)
     rake (0.8.7)
+    rmagick (2.13.1)
     rspec (2.8.0)
       rspec-core (~> 2.8.0)
       rspec-expectations (~> 2.8.0)
@@ -27,5 +28,6 @@ DEPENDENCIES
   fuubar
   mkrf
   rake
+  rmagick
   rspec
   ruby-opengl2
