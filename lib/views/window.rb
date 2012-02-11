@@ -57,7 +57,7 @@ class Window
     glViewport 0, 0, width, height
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity
-    gluPerspective(45, width / height, 0.1, 1000)
+    gluPerspective(45, width / height, 0.1, 10000)
     glMatrixMode(GL_MODELVIEW)
   end
 

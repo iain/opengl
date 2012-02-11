@@ -3,7 +3,9 @@
 require 'environment'
 
 require 'models/spaceship'
+require 'models/sky'
 require 'views/fuselage'
+require 'views/sky_view'
 
 class SpaceWars < Controller
 
@@ -98,6 +100,7 @@ $camera.pitch(Math::PI/2)
 
 window.views << CameraView.new($camera)
 window.views << Fuselage.new(space_wars.spaceship)
+window.views << SkyView.new(Sky.new)
 # window.views << SunView.new(Sun.new)
 
 $window = window
