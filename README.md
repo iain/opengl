@@ -9,7 +9,8 @@ bundle install
 To start:
 
 ```
-./playground
+./server
+./playground Name
 ```
 
 To run tests:
