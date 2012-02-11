@@ -1,18 +1,18 @@
-require 'mechanics/rotation'
+require 'walker/rotation'
 require 'support/matrix_matcher'
 
 class RotatableObject
-  include Rotation
+  include Walker::Rotation
 end
 
-describe Rotation do
+describe Walker::Rotation do
 
   describe "with a class that includes Rotation" do
 
     subject { RotatableObject.new }
 
     it "exposes the rotation" do
-      subject.rotation.should be_a(Rotation::Rotator)
+      subject.rotation.should be_a Walker::Rotation::Rotator
     end
 
     it "exposes the matrix (needed so much for OpenGL, it is public)" do
@@ -22,9 +22,9 @@ describe Rotation do
   end
 
 
-  describe Rotation::Rotator do
+  describe Walker::Rotation::Rotator do
 
-    subject { Rotation::Rotator.new }
+    subject { Walker::Rotation::Rotator.new }
 
     context "at the start" do
 

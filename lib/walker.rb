@@ -1,0 +1,11 @@
+require 'gl'
+require 'glu'
+require 'glut'
+require 'mathn'
+
+require 'walker/view'
+require 'walker/rotation'
+require 'walker/camera'
+require 'walker/camera_view'
+require 'walker/textures'
+require 'walker/window'

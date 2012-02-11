@@ -1,6 +1,6 @@
 class Spaceship
 
-  include Rotation
+  include Walker::Rotation
 
   def animate
     rotation.yaw!(0.01)

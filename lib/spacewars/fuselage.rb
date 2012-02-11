@@ -1,9 +1,9 @@
-class Fuselage < View
+class Fuselage < Walker::View
 
   def draw
     glMultMatrix(@model.matrix)
 
-    texture = $window.textures.find(:neptunemap)
+    texture = Walker::Textures.instance.find(:neptunemap)
 
     quadro = gluNewQuadric();
     gluQuadricNormals(quadro, GLU_SMOOTH);

@@ -1,8 +1,8 @@
-class SkyView < View
+class SkyView < Walker::View
   def draw
     glMultMatrix(@model.matrix)
 
-    texture = $window.textures.find(:starmap)
+    texture = Walker::Textures.instance.find(:starmap)
 
     quadro = gluNewQuadric();
     gluQuadricNormals(quadro, GLU_SMOOTH);

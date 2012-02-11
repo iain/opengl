@@ -1,6 +1,6 @@
-require 'controllers/controller'
+require 'talisman/controller'
 
-class TestController < Controller
+class TestController < Talisman::Controller
 
   attr_reader :key_pressed, :ticked
 
@@ -23,7 +23,7 @@ class TestController < Controller
 
 end
 
-describe Controller do
+describe Talisman::Controller do
 
   subject { TestController.new }
 
