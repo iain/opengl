@@ -23,6 +23,20 @@ class TestController < Talisman::Controller
 
 end
 
+class WithEvents < Talisman::Controller
+
+  attr_reader :events
+
+  def initialize
+    @events = {}
+  end
+
+  on "e" do |event|
+    @events["e"] = event
+  end
+
+end
+
 describe Talisman::Controller do
 
   subject { TestController.new }
@@ -69,6 +83,16 @@ describe Talisman::Controller do
     }.to change {
       subject.ticked
     }.to(1)
+  end
+
+  it "gets events" do
+    x, y = stub, stub
+    subject = WithEvents.new
+    subject.key_press "e", x, y
+    subject.fire_events
+    event = subject.events["e"]
+    event.x.should == x
+    event.y.should == y
   end
 
 end
