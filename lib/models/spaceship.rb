@@ -45,8 +45,6 @@ class Spaceship
 
   def accelerate
     rotation.translate!(0,0,-0.1)
-
-    send_to_server!
   end
 
   def brake
