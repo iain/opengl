@@ -11,6 +11,8 @@ Thread.abort_on_exception=true
 @client_names = []
 
 @client_matrix = []
+@client_commands = []
+
 loop do
   Thread.start(dts.accept) do |s|
     @clients << s
@@ -26,9 +28,14 @@ loop do
         s.puts @client_matrix[requested_id]
       end
 
+      if command == "get_commands"
+        requested_id = @client_names.index(info)
+
+        s.puts @client_commands[requested_id]
+      end
+
       if command == "matrix"
         @client_matrix[client_number]  = info
-        p client_number
       end
 
       if command == "set_name"
@@ -36,9 +43,13 @@ loop do
         @client_names[client_number] = info
       end
 
+      if command == "set_commands"
+        @client_commands[client_number] = info
+      end
+
       if command == "request"
-        s.puts @client_matrix[client_number] if info == "matrix"
-        s.puts "#{@client_names}"            if info == "players"
+        s.puts @client_matrix[client_number]   if info == "matrix"
+        s.puts "#{@client_names}"              if info == "players"
       end
     end
 

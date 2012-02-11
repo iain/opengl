@@ -2,10 +2,11 @@ class Spaceship
 
   include Rotation
 
-  attr_accessor :name
+  attr_accessor :name, :commands
 
   def initialize
     send_to_server!
+    self.commands = []
   end
 
   def animate
@@ -58,6 +59,11 @@ class Spaceship
 
   def set_matrix matrix
     rotation.set(matrix)
+  end
+
+  def activate_callback key
+    spaceship = self
+    SpaceWars.callbacks[key].call
   end
 
 end

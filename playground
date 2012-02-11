@@ -107,6 +107,13 @@ class SpaceWars < Controller
     end
   end
 
+  def get_player_commands
+    $player_shuttlers.each do |id, player|
+      player.commands = $connection.get_player_commands(id)
+
+    end
+  end
+
   def update_player_list
     new_players = $connection.request_players_list - $player_shuttlers.map { |key, info| key.to_s } - [spaceship.name]
 
@@ -119,64 +126,28 @@ class SpaceWars < Controller
   end
 
   def on_tick
-    $camera.rotation.matrix = spaceship.rotation.matrix.inverse
+    # $camera.rotation.matrix = spaceship.rotation.matrix.inverse
     # spaceship.animate
 
 
     $player_shuttlers.each do |id, player|
-      # player.animate
+    #   # player.animate
+      player.pitch_down if player.commands.index("w")
+      player.pitch_up   if player.commands.index("s")
+      player.accelerate if player.commands.index("[")
+      player.brake      if player.commands.index("'")
     end
 
-    if Time.now.to_f - $last_send > 0.1
+    if $connection.communicate_matrice?
       update_player_list
       get_player_locations
       spaceship.send_to_server!
-      $last_send = Time.now.to_f
     end
-  end
 
-end
-
-$last_send = Time.now.to_f
-
-class Connection
-
-  attr_accessor :socket
-
-  def initialize *args
-    @address, @port, @player_name = *args
-    self.socket = TCPSocket.new(@address,@port)
-
-    set_name(@player_name)
-  end
-
-  def send line
-    self.socket.puts line
-  end
-
-  def request line
-    send line
-    socket.gets
-  end
-
-  def set_name player_name
-    send("set_name: #{player_name}")
-  end
-
-  def request_players_list
-    eval(request("request: players"))
-  end
-
-  def send_matrix matrix
-    send("matrix: #{matrix}")
-  end
-
-  def get_player_location id
-    eval(request "get: #{id}")
-  end
-
-  def request_matrix
-    request("request: matrix")
+    if $connection.communicate_commands?
+      $connection.send_commands(keys)
+      get_player_commands
+    end
   end
 
 end
@@ -187,7 +158,11 @@ window = Window.new(space_wars)
 
 $camera = Camera.new( 2)
 
-player_name = "Ronald"
+if ARGV[0].nil?
+  raise "Please fill in a player name. Example: ./playground Pronald"
+end
+
+player_name = ARGV[0]
 address = "localhost"
 port = 31337
 
