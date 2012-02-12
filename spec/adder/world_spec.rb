@@ -7,8 +7,6 @@ end
 
 describe Adder::World do
 
-  subject { Adder::World.new }
-
   it "repositions the spaceship with an acceleration of [2,5,3] calculated over 2 second" do
     spaceship = Spaceship.new
     subject.bodies[:spaceship] = spaceship
@@ -34,7 +32,7 @@ describe Adder::World do
     spaceship.position.should == Vector[0,-44.1,0]
   end
 
-  it "rotates the spaceship with an angular aceelration of [3,2,2] over 3 sec" do
+  it "rotates the spaceship with an angular acceleration of [3,2,2] over 3 sec" do
     spaceship = Spaceship.new
     spaceship.angular_acceleration = Vector[3,2,2]
     subject.bodies[:spaceship] = spaceship

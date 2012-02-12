@@ -14,20 +14,28 @@ module Adder
       self.angular_acceleration = Vector[0, 0, 0]
     end
 
-    def calculate_position dt
+    def calculate(dt)
+      calculate_position(dt)
+      calculate_velocity(dt)
+
+      calculate_rotation(dt)
+      calculate_angular_velocity(dt)
+    end
+
+    def calculate_position(dt)
       self.position += velocity * dt + acceleration * 0.5 * dt**2
     end
 
-    def calculate_velocity dt
+    def calculate_velocity(dt)
       self.velocity += acceleration * dt
     end
 
 
-    def calculate_rotation dt
+    def calculate_rotation(dt)
       self.rotation += angular_velocity * dt + angular_acceleration * 0.5 * dt**2
     end
 
-    def calculate_angular_velocity dt
+    def calculate_angular_velocity(dt)
       self.angular_velocity += angular_acceleration * dt
     end
 
