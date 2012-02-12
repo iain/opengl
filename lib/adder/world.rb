@@ -1,9 +1,14 @@
+require 'singleton'
+
 module Adder
   class World
-    attr_accessor :bodies
+    include Singleton
+
+    attr_accessor :bodies, :gravity
 
     def initialize
       self.bodies = {}
+      self.gravity = false
     end
 
     def over dt
