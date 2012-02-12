@@ -49,7 +49,7 @@ module Adder
       if distance == 0
         0
       else
-        distance**-2 * 6.67e-11 * body.mass * mass
+        distance**-2 * 6.67e-11 * body.mass
       end
     end
 

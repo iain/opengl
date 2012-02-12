@@ -24,6 +24,8 @@ describe Adder::World do
   end
 
   it "repositions the spaceship with a velocity of [2,3,3] calculated over 10 sec" do
+    subject.bodies = {}
+
     spaceship = Spaceship.new
     subject.bodies[:spaceship] = spaceship
     spaceship.velocity = Vector[2,3,3]
@@ -32,6 +34,8 @@ describe Adder::World do
   end
 
   it "repositions the spaceship with an acceleration of -9.8 in the y direction calculated over 3 second" do
+    subject.bodies = {}
+
     spaceship = Spaceship.new
     spaceship.acceleration = Vector[0, -9.8, 0]
     subject.bodies[:spaceship] = spaceship
@@ -41,6 +45,8 @@ describe Adder::World do
   end
 
   it "rotates the spaceship with an angular acceleration of [3,2,2] over 3 sec" do
+    subject.bodies = {}
+
     spaceship = Spaceship.new
     spaceship.angular_acceleration = Vector[3,2,2]
     subject.bodies[:spaceship] = spaceship
@@ -50,6 +56,8 @@ describe Adder::World do
   end
 
   it "calculates the distance between objects" do
+    subject.bodies = {}
+
     earth = Planet.new(:position => Vector[0,0,0])
     venus = Planet.new(:position => Vector[5,5,5])
 
@@ -59,7 +67,9 @@ describe Adder::World do
     earth.distance_of(venus).should == Vector[5,5,5]
   end
 
-  it "assigns the gravitational pull in terms" do
+  it "assigns the gravitational pull off the earth on me" do
+    subject.bodies = {}
+
     subject.gravity = true
 
     earth = Planet.new(:mass => 5e24)
@@ -70,6 +80,6 @@ describe Adder::World do
 
     subject.over(0)
 
-    me.acceleration.should be_vector_like(Vector[0, 1200.6, 0])
+    me.acceleration.should be_vector_like(Vector[0, 13.34, 0])
   end
 end
