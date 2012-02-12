@@ -1,5 +1,6 @@
 require 'adder/world'
 require 'adder/body'
+require 'support/vector_matcher'
 
 class Spaceship < Adder::Body
 end
@@ -36,7 +37,7 @@ describe Adder::World do
     subject.bodies[:spaceship] = spaceship
     subject.over(1)
     subject.over(2)
-    spaceship.position.should == Vector[0,-44.1,0]
+    spaceship.position.should be_vector_like Vector[0,-44.1,0]
   end
 
   it "rotates the spaceship with an angular acceleration of [3,2,2] over 3 sec" do
@@ -49,7 +50,6 @@ describe Adder::World do
   end
 
   it "calculates the distance between objects" do
-
     earth = Planet.new(:position => Vector[0,0,0])
     venus = Planet.new(:position => Vector[5,5,5])
 
@@ -59,17 +59,17 @@ describe Adder::World do
     earth.distance_of(venus).should == Vector[5,5,5]
   end
 
-  # it "assigns the gravitational pull in terms" do
-  #   subject.gravity = true
+  it "assigns the gravitational pull in terms" do
+    subject.gravity = true
 
-  #   earth = Planet.new(:mass => 5e24)
-  #   me    = Spaceship.new(:mass => 90, :position => Vector[0, 5e6, 0])
+    earth = Planet.new(:mass => 5e24)
+    me    = Spaceship.new(:mass => 90, :position => Vector[0, 5e6, 0])
 
-  #   subject.bodies[:earth] = earth
-  #   subject.bodies[:me]    = me
+    subject.bodies[:earth] = earth
+    subject.bodies[:me]    = me
 
-  #   subject.over(0)
+    subject.over(0)
 
-  #   me.acceleration.should == Vector[0, 1200.6, 0]
-  # end
+    me.acceleration.should be_vector_like(Vector[0, 1200.6, 0])
+  end
 end

@@ -1,12 +1,13 @@
 require 'matrix'
 require 'pry'
+require 'mathn'
 
 module Adder
   class Body
     attr_accessor :mass, :position, :velocity, :acceleration, :rotation, :angular_velocity, :angular_acceleration
 
     def initialize args = {}
-      self.mass                 = args[:mass]                 || 0
+      self.mass                 = args[:mass]                 || 10
       self.position             = args[:position]             || Vector[0, 0, 0]
       self.velocity             = args[:velocity]             || Vector[0, 0, 0]
       self.acceleration         = args[:acceleration]         || Vector[0, 0, 0]
@@ -36,8 +37,19 @@ module Adder
 
     def calculate_gravity(dt)
       World.instance.bodies.each do |name, body|
-        body.position - position
+        if distance_of(body) != Vector[0,0,0] && (body.mass + mass) > 0
+          self.acceleration += Vector[gravitational_force(body,0),gravitational_force(body,1),gravitational_force(body,2)]
+        end
         # self.acceleration += (body.position[1] - position[1])**2 * (6.67e-11 * body.mass * mass)**-1
+      end
+    end
+
+    def gravitational_force(body,direction)
+      distance = distance_of(body)[direction]
+      if distance == 0
+        0
+      else
+        distance**-2 * 6.67e-11 * body.mass * mass
       end
     end
 
@@ -53,5 +65,11 @@ module Adder
     def distance_of(other)
       other.position - position
     end
+  end
+end
+
+class Vector
+  def **(num)
+    Vector[self[0]**num,self[1]**num,self[2]**num]
   end
 end
