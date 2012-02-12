@@ -3,6 +3,7 @@
 # load frameworks
 require 'talisman'
 require 'walker'
+require 'adder'
 
 # load game
 require 'spacewars'
