@@ -42,7 +42,7 @@ class Grid
         color_index = set_new_color(((data[width][height].red)/65535),((data[width][height].green)/65535),((data[width][height].blue)/65535))
         self.data << [
           width - @width/2,
-          (data[width][height].opacity/6553.5.round) + 1,
+          (data[width][height].opacity/20000.round) + 1,
           height - @height/2,
           color_index
         ]

@@ -4,7 +4,7 @@ class GridView < View
     super
 
     @hash = {}
-    @field_size = 5.0
+    @field_size = 100.0
   end
 
   def buffered?
@@ -13,6 +13,8 @@ class GridView < View
 
   def draw!
     set_list if buffered?
+    glEnable( GL_TEXTURE_2D )
+    texture = $window.textures.find(:grass)
 
     glTranslate(-@field_size * (@model.width/2), 0, -@field_size * (@model.height/2))
     i = 0
@@ -20,14 +22,16 @@ class GridView < View
       glPushMatrix
       @model.height.times do |width|
         glTranslate(@field_size,0,0)
-
-        show_field(*@model.data[i])
+        glPushMatrix
+        show_field(*@model.data[i],texture)
         i += 1
+        glPopMatrix
       end
       glPopMatrix
       glTranslate(0,0,@field_size)
     end
 
+    glDisable( GL_TEXTURE_2D )
     drawSky
   end
 
@@ -76,8 +80,10 @@ class GridView < View
     glEndList
   end
 
-  def show_field x, y, z, color_index
+  def show_field x, y, z, color_index, texture
+    # glTranslate(0,@field_size * y,0)
     glColor(*@model.color_list[color_index])
+    glBindTexture( GL_TEXTURE_2D, texture )
     glCallList(@hash[:cube][0]);
   end
 end

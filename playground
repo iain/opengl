@@ -87,7 +87,7 @@ class SpaceWars < Controller
   end
 
   def grid
-    @grid ||= Grid.new('world.png')
+    @grid ||= Grid.new('world.bmp')
   end
 
   def on_tick
@@ -100,7 +100,8 @@ space_wars = SpaceWars.new
 
 window = Window.new(space_wars)
 textures = {
-  :wooden_box => ['Wood_Box_Texture_by_jackzeenho.bmp',512,512]
+  :wooden_box => ['Wood_Box_Texture_by_jackzeenho.bmp',512,512],
+  :grass      => ['grassmap.bmp',512,512]
 }
 
 window.textures.add(textures)
