@@ -87,7 +87,7 @@ class SpaceWars < Controller
   end
 
   def grid
-    @grid ||= Grid.new('world.bmp')
+    @grid ||= Grid.new('world.png')
   end
 
   def on_tick

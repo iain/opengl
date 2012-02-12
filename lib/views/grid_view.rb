@@ -4,7 +4,7 @@ class GridView < View
     super
 
     @hash = {}
-    @field_size = 10.0
+    @field_size = 5.0
   end
 
   def buffered?
@@ -14,10 +14,18 @@ class GridView < View
   def draw!
     set_list if buffered?
 
-    @model.data.each do |info|
+    glTranslate(-@field_size * (@model.width/2), 0, -@field_size * (@model.height/2))
+    i = 0
+    @model.width.times do |height|
       glPushMatrix
-      show_field(*info)
+      @model.height.times do |width|
+        glTranslate(@field_size,0,0)
+
+        show_field(*@model.data[i])
+        i += 1
+      end
       glPopMatrix
+      glTranslate(0,0,@field_size)
     end
 
     drawSky
@@ -64,17 +72,12 @@ class GridView < View
     @hash[:cube] = glGenLists(1)
     glNewList(@hash[:cube], GL_COMPILE)
     glBegin(GL_QUADS)
-    drawCube(@field_size)
+    drawCube(@field_size/2)
     glEndList
   end
 
-  def show_field x, y, z, color
-    x *= 2*@field_size
-    y -= 20
-    z *= 2*@field_size
-
-    glTranslate(x,y,z)
-    glColor(*color)
+  def show_field x, y, z, color_index
+    glColor(*@model.color_list[color_index])
     glCallList(@hash[:cube][0]);
   end
 end

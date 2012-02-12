@@ -1,12 +1,13 @@
 class Grid
   include Magick
 
-  attr_accessor :data
+  attr_accessor :data, :color_list
 
   def initialize path
     @path = path
     @width      = 0
     @height     = 0
+    self.color_list = []
     self.data   = []
 
     load_world
@@ -20,6 +21,15 @@ class Grid
     @height
   end
 
+  def set_new_color r, g ,b
+    if color_index = color_list.index([r,g,b])
+    else
+      color_index = color_list.size
+      self.color_list << [r,g,b]
+    end
+    color_index
+  end
+
   def load_world
     world = ImageList.new(@path)
 
@@ -29,16 +39,12 @@ class Grid
     data = world.view(0,0,@height,@width)
     @height.times do |width|
       @width.times do |height|
+        color_index = set_new_color(((data[width][height].red)/65535),((data[width][height].green)/65535),((data[width][height].blue)/65535))
         self.data << [
           width - @width/2,
           (data[width][height].opacity/6553.5.round) + 1,
           height - @height/2,
-          [
-            ((data[width][height].red)/65535),
-            ((data[width][height].green)/65535),
-            ((data[width][height].blue)/65535),
-            1.0
-          ]
+          color_index
         ]
       end
     end
