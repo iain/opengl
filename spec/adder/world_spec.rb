@@ -73,13 +73,14 @@ describe Adder::World do
     subject.gravity = true
 
     earth = Planet.new(:mass => 5e24)
-    me    = Spaceship.new(:mass => 90, :position => Vector[0, 5e6, 0])
+    me    = Spaceship.new(:mass => 90, :position => Vector[0, 5.83358e6, 0])
 
     subject.bodies[:earth] = earth
     subject.bodies[:me]    = me
 
     subject.over(0)
 
-    me.acceleration.should be_vector_like(Vector[0, 13.34, 0])
+    me.acceleration.should be_vector_like(Vector[0, 9.8, 0])
   end
+
 end
