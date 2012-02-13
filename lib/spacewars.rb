@@ -7,10 +7,9 @@ require 'spacewars/space_wars'
 require 'spacewars/spaceship'
 
 camera = Walker::Camera.new( -40)
-camera.pitch(Math::PI/2)
 
-earth = Planet.new(:mass => 5.9736e24, :radius => 6.358e6)
-moon  = Moon.new(:mass => 7.3477e22, :radius => 1.735e6, :position => Vector[4e8,0,0], :velocity => Vector[0, 1022, 0])
+earth = Planet.new(:mass => 5.9736e24, :radius => 6.358e6, :angular_velocity => Vector[0,(2*Math::PI/86400),0])
+moon  = Moon.new(:mass => 7.3477e22, :radius => 1.735e6, :position => Vector[4e8,0,0], :velocity => Vector[0, 0, 1022])
 
 world = Adder::World.instance
 

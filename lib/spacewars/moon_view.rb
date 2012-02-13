@@ -1,8 +1,6 @@
 class MoonView < Walker::View
   def draw
     glTranslate(*@model.position.to_a)
-    # puts "acceleration #{@model.acceleration} with speed #{@model.velocity}"
-    puts @model.distance_of(Adder::World.instance.bodies[:earth]).magnitude
 
     texture = Walker::Textures.instance.find(:moonmap,2)
 

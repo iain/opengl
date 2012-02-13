@@ -5,6 +5,9 @@ module Walker
 
     def initialize(zoom = 0)
       @zoom = zoom
+
+      # roll(-Math::PI/2)
+      # yaw(-Math::PI)
     end
 
     def zoom_in
@@ -16,15 +19,15 @@ module Walker
     end
 
     def roll(r)
-      rotation.roll!(r)
+      self.rotation.matrix *= rotation.roll(r)
     end
 
     def yaw(r)
-      rotation.yaw!(r)
+      self.rotation.matrix *= rotation.yaw(r)
     end
 
     def pitch(r)
-      rotation.pitch!(r)
+      self.rotation.matrix *= rotation.pitch(r)
     end
 
     # Change the matrix to allow for zooming
