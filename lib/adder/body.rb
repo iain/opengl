@@ -1,10 +1,11 @@
 require 'matrix'
-require 'pry'
 require 'mathn'
 
 module Adder
   class Body
     attr_accessor :mass, :position, :velocity, :acceleration, :rotation, :angular_velocity, :angular_acceleration
+
+    GRAVITATION = 6.67384e-11 #N(m/kg)^2
 
     def initialize args = {}
       self.mass                 = args[:mass]                 || 10
@@ -19,12 +20,13 @@ module Adder
 
     def calculate(dt)
       calculate_position(dt)
+
+      calculate_gravity(dt) if World.instance.gravity
+
       calculate_velocity(dt)
 
       calculate_rotation(dt)
       calculate_angular_velocity(dt)
-
-      calculate_gravity(dt) if World.instance.gravity
     end
 
     def calculate_position(dt)
@@ -36,20 +38,19 @@ module Adder
     end
 
     def calculate_gravity(dt)
+      self.acceleration = Vector[0, 0, 0]
       World.instance.bodies.each do |name, body|
-        if distance_of(body) != Vector[0,0,0] && (body.mass + mass) > 0
-          self.acceleration += Vector[gravitational_force(body,0),gravitational_force(body,1),gravitational_force(body,2)]
-        end
-        # self.acceleration += (body.position[1] - position[1])**2 * (6.67e-11 * body.mass * mass)**-1
+        self.acceleration += (gravitational_force(body) * (1/mass)) unless body == self
       end
     end
 
-    def gravitational_force(body,direction)
-      distance = distance_of(body)[direction]
-      if distance == 0
-        0
+    def gravitational_force(body)
+      distance = distance_of(body)
+
+      if distance.magnitude == 0
+        Vector[0, 0, 0]
       else
-        distance**-2 * 6.67e-11 * body.mass
+        distance.directions * ((GRAVITATION * body.mass * mass)/(distance.magnitude**2))
       end
     end
 
@@ -63,13 +64,29 @@ module Adder
     end
 
     def distance_of(other)
-      other.position - position
+      (other.position - position)
     end
   end
 end
 
 class Vector
   def **(num)
-    Vector[self[0]**num,self[1]**num,self[2]**num]
+    Vector[
+      self[0] > 0 ? self[0]**num : 0,
+      self[1] > 0 ? self[1]**num : 0,
+      self[2] > 0 ? self[2]**num : 0
+    ]
+  end
+
+  def abs
+    Vector[
+      self[0].abs,
+      self[1].abs,
+      self[2].abs
+    ]
+  end
+
+  def directions
+    self == Vector[0, 0, 0] ? self : self * (1/(self.magnitude).abs)
   end
 end

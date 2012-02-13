@@ -6,6 +6,12 @@ module Adder
 
     attr_accessor :bodies, :gravity
 
+    def add_bodies hash
+      hash.each do |name, body|
+        self.bodies[name] = body
+      end
+    end
+
     def initialize
       self.bodies = {}
       self.gravity = false

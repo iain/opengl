@@ -6,6 +6,7 @@ class SpaceWars < Talisman::Controller
 
   def initialize(camera, spaceship)
     @camera, @spaceship = camera, spaceship
+    @time = time
   end
 
   on "w" do
@@ -53,7 +54,7 @@ class SpaceWars < Talisman::Controller
   end
 
   on "h" do
-    camera.roll(-0.1)
+    camera.yaw(-0.1)
   end
 
   on "j" do
@@ -65,7 +66,7 @@ class SpaceWars < Talisman::Controller
   end
 
   on "l" do
-    camera.roll( 0.1)
+    camera.yaw( 0.1)
   end
 
   on "f" do
@@ -81,7 +82,14 @@ class SpaceWars < Talisman::Controller
   end
 
   def on_tick
+    Adder::World.instance.over((time - @time))
+    @time = time
+
     spaceship.animate
+  end
+
+  def time
+    Time.now.to_f * 50000
   end
 
 end

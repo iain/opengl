@@ -15,6 +15,11 @@ describe Adder::World do
 
   subject { Adder::World.instance }
 
+  before(:each) do
+    subject.bodies = {}
+    subject.gravity = false
+  end
+
   it "repositions the spaceship with an acceleration of [2,5,3] calculated over 2 second" do
     spaceship = Spaceship.new
     subject.bodies[:spaceship] = spaceship
@@ -24,8 +29,6 @@ describe Adder::World do
   end
 
   it "repositions the spaceship with a velocity of [2,3,3] calculated over 10 sec" do
-    subject.bodies = {}
-
     spaceship = Spaceship.new
     subject.bodies[:spaceship] = spaceship
     spaceship.velocity = Vector[2,3,3]
@@ -34,8 +37,6 @@ describe Adder::World do
   end
 
   it "repositions the spaceship with an acceleration of -9.8 in the y direction calculated over 3 second" do
-    subject.bodies = {}
-
     spaceship = Spaceship.new
     spaceship.acceleration = Vector[0, -9.8, 0]
     subject.bodies[:spaceship] = spaceship
@@ -45,8 +46,6 @@ describe Adder::World do
   end
 
   it "rotates the spaceship with an angular acceleration of [3,2,2] over 3 sec" do
-    subject.bodies = {}
-
     spaceship = Spaceship.new
     spaceship.angular_acceleration = Vector[3,2,2]
     subject.bodies[:spaceship] = spaceship
@@ -56,8 +55,6 @@ describe Adder::World do
   end
 
   it "calculates the distance between objects" do
-    subject.bodies = {}
-
     earth = Planet.new(:position => Vector[0,0,0])
     venus = Planet.new(:position => Vector[5,5,5])
 
@@ -68,8 +65,6 @@ describe Adder::World do
   end
 
   it "assigns the gravitational pull off the earth on me" do
-    subject.bodies = {}
-
     subject.gravity = true
 
     earth = Planet.new(:mass => 5e24)
@@ -78,9 +73,30 @@ describe Adder::World do
     subject.bodies[:earth] = earth
     subject.bodies[:me]    = me
 
+    me.distance_of(earth).should be_vector_like( Vector[0, -5.83358e6, 0])
+
     subject.over(0)
 
-    me.acceleration.should be_vector_like(Vector[0, 9.8, 0])
+    me.acceleration.should be_vector_like(Vector[0,-9.8, 0])
+  end
+
+  it "should assign the gravitational pull off the earth on the moon so that it makes a full rotation in 27 days" do
+    subject.gravity = true
+
+    earth = Planet.new(:mass => 5e24)
+    moon  = Moon.new(:mass => 7.3477e22,:position => Vector[4e8,0,0], :velocity => Vector[0, 0, 1022])
+
+    subject.add_bodies(:earth => earth, :moon => moon)
+    subject.over(0)
+
+    moon.acceleration.should be_vector_like(Vector[-0.008, 0, 0])
+    moon.velocity.should be_vector_like(Vector[0, 0, 1022])
+
+    old_position_moon = moon.position
+    subject.over(2.361e6)
+
+    moon.velocity[1].should be_within(1022).of(10)
+
   end
 
 end
