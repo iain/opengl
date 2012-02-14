@@ -1,6 +1,6 @@
 class MoonView < Walker::View
   def draw
-    glTranslate(*@model.position.to_a)
+    glMultMatrix(@model.matrix)
 
     texture = Walker::Textures.instance.find(:moonmap,2)
 

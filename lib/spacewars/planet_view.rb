@@ -2,8 +2,8 @@ class PlanetView < Walker::View
   def draw
     texture = Walker::Textures.instance.find(:earthmap,2)
 
-    glTranslate(*@model.position.to_a)
-    glRotate(@model.rotation.magnitude,*@model.rotation.directions.to_a)
+    glMultMatrix(@model.matrix)
+
     glRotate(90,-1,0,0) #fix sideway texture..
 
     quadro = gluNewQuadric();
