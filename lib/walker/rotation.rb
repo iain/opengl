@@ -79,6 +79,12 @@ module Walker
         self.matrix += translate(x, y, z) * matrix
       end
 
+      def rotate(r, x, y, z)
+        pitch!(r*x)
+        yaw!(r*y)
+        roll!(r*z)
+      end
+
     end
 
   end

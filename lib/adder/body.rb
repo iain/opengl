@@ -1,36 +1,42 @@
 require 'matrix'
 require 'mathn'
+require 'walker'
 
 module Adder
   class Body
-    attr_accessor :mass, :position, :velocity, :acceleration, :rotation, :angular_velocity, :angular_acceleration
+    attr_accessor :mass, :velocity, :acceleration, :angular_velocity, :angular_acceleration
+
+    include Walker::Rotation
 
     GRAVITATION = 6.67384e-11 #N(m/kg)^2
 
     def initialize args = {}
+      rotation.translate!(*args[:position]) if args[:position]
+
       self.mass                 = args[:mass]                 || 10
-      self.position             = args[:position]             || Vector[0, 0, 0]
       self.velocity             = args[:velocity]             || Vector[0, 0, 0]
       self.acceleration         = args[:acceleration]         || Vector[0, 0, 0]
 
-      self.rotation             = args[:rotation]             || Vector[0, 0, 0]
       self.angular_velocity     = args[:angular_velocity]     || Vector[0, 0, 0]
       self.angular_acceleration = args[:angular_acceleration] || Vector[0, 0, 0]
     end
 
     def calculate(dt)
-      calculate_position(dt)
+      rotation.translate!(*calculate_position(dt))
 
       calculate_gravity(dt) if World.instance.gravity
 
       calculate_velocity(dt)
 
-      calculate_rotation(dt)
+      to_be_rotated = calculate_rotation(dt)
+
+      rotation.rotate(to_be_rotated.magnitude, *to_be_rotated.directions)
+
       calculate_angular_velocity(dt)
     end
 
     def calculate_position(dt)
-      self.position += velocity * dt + acceleration * 0.5 * dt**2
+      velocity * dt + acceleration * 0.5 * dt**2
     end
 
     def calculate_velocity(dt)
@@ -56,7 +62,7 @@ module Adder
 
 
     def calculate_rotation(dt)
-      self.rotation += angular_velocity * dt + angular_acceleration * 0.5 * dt**2
+      angular_velocity * dt + angular_acceleration * 0.5 * dt**2
     end
 
     def calculate_angular_velocity(dt)
@@ -64,7 +70,7 @@ module Adder
     end
 
     def distance_of(other)
-      (other.position - position)
+      (other.matrix.position_vector - matrix.position_vector)
     end
   end
 end
@@ -88,5 +94,15 @@ class Vector
 
   def directions
     self == Vector[0, 0, 0] ? self : self * (1/(self.magnitude).abs)
+  end
+end
+
+class Matrix
+  def position_vector
+    Vector[
+      self[3,0],
+      self[3,1],
+      self[3,2]
+      ]
   end
 end

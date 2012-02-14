@@ -25,7 +25,7 @@ describe Adder::World do
     subject.bodies[:spaceship] = spaceship
     spaceship.acceleration = Vector[2, 5, 3]
     subject.over(2)
-    spaceship.position.should == Vector[4, 10, 6]
+    spaceship.matrix.position_vector.should == Vector[4, 10, 6]
   end
 
   it "repositions the spaceship with a velocity of [2,3,3] calculated over 10 sec" do
@@ -33,7 +33,7 @@ describe Adder::World do
     subject.bodies[:spaceship] = spaceship
     spaceship.velocity = Vector[2,3,3]
     subject.over(10)
-    spaceship.position.should == Vector[20,30,30]
+    spaceship.matrix.position_vector.should == Vector[20,30,30]
   end
 
   it "repositions the spaceship with an acceleration of -9.8 in the y direction calculated over 3 second" do
@@ -42,7 +42,7 @@ describe Adder::World do
     subject.bodies[:spaceship] = spaceship
     subject.over(1)
     subject.over(2)
-    spaceship.position.should be_vector_like Vector[0,-44.1,0]
+    spaceship.matrix.position_vector.should be_vector_like Vector[0,-44.1,0]
   end
 
   it "rotates the spaceship with an angular acceleration of [3,2,2] over 3 sec" do
@@ -50,7 +50,12 @@ describe Adder::World do
     spaceship.angular_acceleration = Vector[3,2,2]
     subject.bodies[:spaceship] = spaceship
     subject.over(3)
-    spaceship.rotation.should == Vector[13.5, 9, 9]
+    spaceship.matrix.should be_matrix_like(
+        [   0.83,  -0.54,   0.10,   0 ],
+        [  -0.37,  -0.40,   0.83,   0 ],
+        [  -0.41,  -0.73,  -0.54,   0 ],
+        [   0.00,   0.00,   0.00,   1 ]
+      )
     spaceship.angular_velocity.should == Vector[9, 6, 6]
   end
 
@@ -92,7 +97,7 @@ describe Adder::World do
     moon.acceleration.should be_vector_like(Vector[-0.008, 0, 0])
     moon.velocity.should be_vector_like(Vector[0, 0, 1022])
 
-    old_position_moon = moon.position
+    old_position_moon = moon.matrix.position_vector
     subject.over(2.361e6)
 
     moon.velocity[1].should be_within(1022).of(10)
