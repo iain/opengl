@@ -39,10 +39,10 @@ describe Walker::Rotation do
       it "rotates along the x axis" do
         subject.yaw! Math::PI / 2
         subject.matrix.should be_matrix_like(
-          [ 0, -1, 0, 0 ],
-          [ 1,  0, 0, 0 ],
-          [ 0,  0, 1, 0 ],
-          [ 0,  0, 0, 1 ]
+          [  0, 0, 1, 0 ],
+          [  0, 1, 0, 0 ],
+          [ -1, 0, 0, 0 ],
+          [  0, 0, 0, 1 ]
         )
       end
 
@@ -67,10 +67,10 @@ describe Walker::Rotation do
       it "rotates along the z axis" do
         subject.roll! Math::PI / 2
         subject.matrix.should be_matrix_like(
-          [  0, 0, 1, 0 ],
-          [  0, 1, 0, 0 ],
-          [ -1, 0, 0, 0 ],
-          [  0, 0, 0, 1 ]
+          [ 0, -1, 0, 0 ],
+          [ 1,  0, 0, 0 ],
+          [ 0,  0, 1, 0 ],
+          [ 0,  0, 0, 1 ]
         )
       end
 
@@ -112,10 +112,10 @@ describe Walker::Rotation do
         subject.roll! Math::PI / 2
         subject.translate! 1, 0, 0
         subject.matrix.should be_matrix_like(
+          [  0,-1, 0, 0 ],
+          [  1, 0, 0, 0 ],
           [  0, 0, 1, 0 ],
-          [  0, 1, 0, 0 ],
-          [ -1, 0, 0, 0 ],
-          [  0, 0, 1, 1 ]
+          [  0,-1, 0, 1 ]
         )
       end
 
@@ -123,9 +123,9 @@ describe Walker::Rotation do
         subject.translate! 1, 0, 0
         subject.roll! Math::PI / 2
         subject.matrix.should be_matrix_like(
+          [  0,-1, 0, 0 ],
+          [  1, 0, 0, 0 ],
           [  0, 0, 1, 0 ],
-          [  0, 1, 0, 0 ],
-          [ -1, 0, 0, 0 ],
           [  1, 0, 0, 1 ]
         )
       end
