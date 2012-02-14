@@ -4,17 +4,13 @@ require 'support/matrix_matcher'
 
 describe Walker::Camera do
 
-  it "has a default position and rotation" do
-    subject.matrix.should == Matrix.identity(4)
-  end
-
   it "can zoom in" do
     subject.zoom_in
     subject.matrix.should be_matrix_like(
       [ 1, 0,   0, 0 ],
       [ 0, 1,   0, 0 ],
       [ 0, 0,   1, 0 ],
-      [ 0, 0, 0.1, 1 ]
+      [ 0, 0, 0.9, 1 ]
     )
   end
 
@@ -24,7 +20,7 @@ describe Walker::Camera do
       [ 1, 0,    0, 0 ],
       [ 0, 1,    0, 0 ],
       [ 0, 0,    1, 0 ],
-      [ 0, 0, -0.1, 1 ]
+      [ 0, 0,  1.1, 1 ]
     )
   end
 
@@ -32,10 +28,10 @@ describe Walker::Camera do
     subject.zoom_out
     subject.roll Math::PI / 2
     subject.matrix.should be_matrix_like(
+      [  0,-1,    0, 0 ],
+      [  1, 0,    0, 0 ],
       [  0, 0,    1, 0 ],
-      [  0, 1,    0, 0 ],
-      [ -1, 0,    0, 0 ],
-      [  0, 0, -0.1, 1 ]
+      [  0, 0,  1.1, 1 ]
     )
   end
 
@@ -43,10 +39,10 @@ describe Walker::Camera do
     subject.zoom_in
     subject.roll Math::PI / 2
     subject.matrix.should be_matrix_like(
-      [  0, 0,   1, 0 ],
-      [  0, 1,   0, 0 ],
-      [ -1, 0,   0, 0 ],
-      [  0, 0, 0.1, 1 ]
+      [  0,-1,    0, 0 ],
+      [  1, 0,    0, 0 ],
+      [  0, 0,    1, 0 ],
+      [  0, 0, 0.9, 1 ]
     )
   end
 

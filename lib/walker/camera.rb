@@ -3,7 +3,7 @@ module Walker
 
     include Rotation
 
-    def initialize(zoom = 0)
+    def initialize(zoom = 1)
       @zoom = zoom
 
       # roll(-Math::PI/2)
