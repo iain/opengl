@@ -14,7 +14,7 @@ module Talisman
     end
 
     def key_press(key, x, y)
-      events[key: key].trigger(type: :key, key: key, x: x, y: y)
+      events[key: key].register(type: :key, key: key, x: x, y: y)
     end
     alias_method :special_key_press, :key_press
 

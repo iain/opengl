@@ -5,7 +5,7 @@ module Talisman
       @attributes = {}
     end
 
-    def trigger(attrs)
+    def register(attrs)
       @attributes = attrs
     end
 
