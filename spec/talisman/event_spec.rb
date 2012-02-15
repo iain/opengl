@@ -27,4 +27,15 @@ describe Talisman::Event do
     subject.duration.should be_within(0.1).of(1.0)
   end
 
+  it "tracks the movement of cursor" do
+    subject.register x: 1
+    subject.register x: 3
+    subject.delta(:x).should == 2
+  end
+
+  it "handles movement of cursor when only one register happened" do
+    subject.register y: 5
+    subject.delta(:y).should == 5
+  end
+
 end

@@ -11,6 +11,7 @@ module Talisman
     end
 
     def register(attrs)
+      @previous_attributes = @attributes
       @attributes = attrs
     end
 
@@ -33,6 +34,10 @@ module Talisman
     def trigger
       now = clock.now
       @trigger_time, @duration = now, now - @trigger_time
+    end
+
+    def delta(field)
+      @attributes[field].to_i - @previous_attributes[field].to_i
     end
 
   end
