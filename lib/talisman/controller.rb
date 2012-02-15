@@ -45,6 +45,7 @@ module Talisman
     def call_callbacks
       events.each do |id, event|
         callback = callbacks[id]
+        event.trigger
         instance_exec(event, &callback) if callback
       end
     end

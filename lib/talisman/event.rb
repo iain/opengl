@@ -1,43 +1,59 @@
 module Talisman
   class Event
 
-    attr_reader :duration, :clock
+    attr_reader :clock
 
     def initialize(clock = Time)
       @clock = clock
-      @attributes = {}
-      @duration = 0
-      @trigger_time = clock.now
+      assign({})
     end
 
     def register(attrs)
-      @previous_attributes = @attributes
-      @attributes = attrs
+      assign attrs
     end
 
     def x
-      @attributes[:x]
+      current :x
     end
 
     def y
-      @attributes[:y]
+      current :y
     end
 
     def key
-      @attributes[:key]
+      current :key
     end
 
     def type
-      @attributes[:type]
+      current :type
+    end
+
+    def history
+      @history ||= []
+    end
+
+    def assign(attrs)
+      history << attrs.merge(:time => clock.now)
+    end
+
+    def current(field)
+      history.last && history.last[field]
+    end
+
+    def duration
+      delta(:time)
     end
 
     def trigger
-      now = clock.now
-      @trigger_time, @duration = now, now - @trigger_time
+      assign history.last
     end
 
     def delta(field)
-      @attributes[field].to_i - @previous_attributes[field].to_i
+      changes(field).reverse.compact.inject(&:-)
+    end
+
+    def changes(field)
+      history[-2..-1].map { |attr| attr[field] }
     end
 
   end

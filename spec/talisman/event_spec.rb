@@ -38,4 +38,10 @@ describe Talisman::Event do
     subject.delta(:y).should == 5
   end
 
+  it "shows previous and current value" do
+    subject.register x: 1
+    subject.register x: 3
+    subject.changes(:x).should == [1,3]
+  end
+
 end
