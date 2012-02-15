@@ -4,6 +4,8 @@ class MoonView < Walker::View
 
     texture = Walker::Textures.instance.find(:moonmap,2)
 
+    glRotate(90,-1,0,0) #fix sideway texture..
+
     quadro = gluNewQuadric();
     gluQuadricNormals(quadro, GLU_SMOOTH);
     gluQuadricTexture(quadro, GL_TRUE);

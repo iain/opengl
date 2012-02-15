@@ -6,15 +6,17 @@ require 'spacewars/moon_view'
 require 'spacewars/space_wars'
 require 'spacewars/spaceship'
 
-camera = Walker::Camera.new( -40)
+camera = Walker::Camera.new( -4e6)
 
 earth = Planet.new(:mass => 5.9736e24, :radius => 6.358e6, :angular_velocity => Vector[0,(2*Math::PI/86400),0])
-moon  = Moon.new(:mass => 7.3477e22, :radius => 1.735e6, :position => Vector[4e8,0,0], :velocity => Vector[0, 0, 1022])
+moon  = Moon.new(:mass => 7.3477e22, :radius => 1.735e6, :angular_velocity => Vector[0,(2*Math::PI/2358720),0], :position => Vector[4e8,0,0], :velocity => Vector[0, 0, 1022])
 
 world = Adder::World.instance
 
 world.gravity = true
 world.add_bodies(:earth => earth, :moon => moon)
+
+camera.follow_object = moon
 
 
 spaceship = Spaceship.new

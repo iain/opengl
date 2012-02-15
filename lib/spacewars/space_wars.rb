@@ -83,13 +83,17 @@ class SpaceWars < Talisman::Controller
 
   def on_tick
     Adder::World.instance.over((time - @time))
+
+    # camera.set_position(Adder::World.instance.bodies[:moon])
+    # camera.yaw(Math::PI)
+
     @time = time
 
     spaceship.animate
   end
 
   def time
-    Time.now.to_f * 50000
+    Time.now.to_f * 10000
   end
 
 end

@@ -66,7 +66,7 @@ module Walker
         self.matrix = pitch(r) * matrix
       end
 
-      def translate(x, y, z)
+      def translate(x, y, z, w = 0)
         M[
           [ 0, 0, 0, 0],
           [ 0, 0, 0, 0],
@@ -75,11 +75,15 @@ module Walker
         ]
       end
 
-      def translate!(x, y, z)
+      def translate!(x, y, z, w = 0)
         self.matrix += translate(x, y, z) * matrix
       end
 
       def rotate(r, x, y, z)
+        pitch(r*x) * yaw(r*y) * roll(r*z)
+      end
+
+      def rotate!(r, x, y, z)
         pitch!(r*x)
         yaw!(r*y)
         roll!(r*z)

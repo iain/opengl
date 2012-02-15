@@ -30,7 +30,7 @@ module Adder
 
       to_be_rotated = calculate_rotation(dt)
 
-      rotation.rotate(to_be_rotated.magnitude, *to_be_rotated.directions)
+      rotation.rotate!(to_be_rotated.magnitude, *to_be_rotated.directions)
 
       calculate_angular_velocity(dt)
     end

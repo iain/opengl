@@ -1,11 +1,12 @@
 module Walker
   class Camera
+    attr_accessor :follow_object
 
     include Rotation
 
     def initialize(zoom = 1)
       @zoom = zoom
-
+      self.follow_object = false
       # roll(-Math::PI/2)
       # yaw(-Math::PI)
     end
@@ -32,7 +33,7 @@ module Walker
 
     # Change the matrix to allow for zooming
     def matrix
-      rotation.matrix + rotation.translate(0, 0, @zoom)
+      (follow_object ? follow_object.matrix.inverse : Matrix.identity(4)) * rotation.matrix + rotation.translate(0,0,@zoom)
     end
 
   end
