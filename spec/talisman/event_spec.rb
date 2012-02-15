@@ -18,4 +18,13 @@ describe Talisman::Event do
     expect { subject.register type: :mouse }.to change { subject.type }.to :mouse
   end
 
+  it "knows the time since the last trigger" do
+    clock = stub "Time"
+    clock.stub(:now) { Time.at(0) }
+    subject = Talisman::Event.new(clock)
+    clock.stub(:now) { Time.at(1) }
+    subject.trigger
+    subject.duration.should be_within(0.1).of(1.0)
+  end
+
 end

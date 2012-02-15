@@ -1,8 +1,13 @@
 module Talisman
   class Event
 
-    def initialize
+    attr_reader :duration, :clock
+
+    def initialize(clock = Time)
+      @clock = clock
       @attributes = {}
+      @duration = 0
+      @trigger_time = clock.now
     end
 
     def register(attrs)
@@ -23,6 +28,11 @@ module Talisman
 
     def type
       @attributes[:type]
+    end
+
+    def trigger
+      now = clock.now
+      @trigger_time, @duration = now, now - @trigger_time
     end
 
   end
