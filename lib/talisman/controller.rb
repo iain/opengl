@@ -1,9 +1,12 @@
+require 'talisman/event'
+
 module Talisman
   class Controller
-    Event = Struct.new(:key, :x, :y)
 
-    def self.on(key, &action)
-      callbacks[key] = action
+    # TODO deprecate the use of anything other than hash as parameter
+    def self.on(id_or_key, &action)
+      id = id_or_key.is_a?(Hash) ? id_or_key : { key: id_or_key }
+      callbacks[id] = action
     end
 
     def self.callbacks
@@ -11,18 +14,14 @@ module Talisman
     end
 
     def key_press(key, x, y)
-      keys[key] = Event.new(key, x, y)
+      events[key: key].trigger(type: :key, key: key, x: x, y: y)
     end
     alias_method :special_key_press, :key_press
 
     def key_up(key, x, y)
-      keys.delete(key)
+      events.delete(key: key)
     end
     alias_method :special_key_up, :key_up
-
-    def keys
-      @keys ||= {}
-    end
 
     def callbacks
       self.class.callbacks
@@ -30,6 +29,10 @@ module Talisman
 
     def on_tick
       # no op
+    end
+
+    def events
+      @events ||= Hash.new { |h,k| h[k] = Event.new }
     end
 
     attr_accessor :window
@@ -40,8 +43,8 @@ module Talisman
     end
 
     def call_callbacks
-      keys.each do |key, event|
-        callback = callbacks[key]
+      events.each do |id, event|
+        callback = callbacks[id]
         instance_exec(event, &callback) if callback
       end
     end

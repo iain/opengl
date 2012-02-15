@@ -15,7 +15,7 @@ class TestController < Talisman::Controller
 
   on "a" do
     key_pressed["a"] += 1
-  end
+ end
 
   def on_tick
     @ticked += 1
@@ -25,14 +25,14 @@ end
 
 class WithEvents < Talisman::Controller
 
-  attr_reader :events
+  attr_reader :recorded_events
 
   def initialize
-    @events = {}
+    @recorded_events = {}
   end
 
   on "e" do |event|
-    @events["e"] = event
+    @recorded_events["e"] = event
   end
 
 end
@@ -90,9 +90,11 @@ describe Talisman::Controller do
     subject = WithEvents.new
     subject.key_press "e", x, y
     subject.fire_events
-    event = subject.events["e"]
+    event = subject.recorded_events["e"]
     event.x.should == x
     event.y.should == y
+    event.key.should == "e"
+    event.type.should == :key
   end
 
 end
