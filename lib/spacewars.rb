@@ -15,37 +15,37 @@ sun = Star.new(
   :radius => 6.995e8
 )
 
-earth = Planet.new(
-  :mass             => 5.9736e24,
-  :radius           => 6.358e6,
-  :texture          => :earthmap,
-  :position         => Vector[1.496e11, 0, 0],
-  :velocity         => Vector[0, 0, 29780],
-  :angular_velocity => Vector[0,(2*Math::PI/86400),0]
-)
+earth = Planet.new do |p|
+  p.mass             = 5.9736e24
+  p.radius           = 6.358e6
+  p.texture          = :earthmap
+  p.position         = Vector[1.496e11, 0, 0, 0]
+  p.velocity         = Vector[0, 0, 29780, 0]
+  p.angular_velocity = Vector[0,(2*Math::PI/86400),0, 0]
+end
 
-moon  = Moon.new(
-  :mass     => 7.3477e22,
-  :radius   => 1.735e6,
-  :position => Vector[1.500e11, 0, 0],
-  :velocity => Vector[0, 0, 30802]
-)
+moon  = Moon.new do |m|
+  m.mass     = 7.3477e22
+  m.radius   = 1.735e6
+  m.position = Vector[1.500e11, 0, 0, 0]
+  m.velocity = Vector[0, 0, 30802, 0]
+end
 
-mars = Planet.new(
-  :texture  => :marsmap,
-  :mass     => 6.419e23,
-  :radius   => 3.376e6,
-  :position => Vector[2.49e11, 0, 0],
-  :velocity => Vector[0, 0, 24077]
-)
+mars = Planet.new do |m|
+  m.texture  = :marsmap
+  m.mass     = 6.419e23
+  m.radius   = 3.376e6
+  m.position = Vector[2.49e11, 0, 0, 0]
+  m.velocity = Vector[0, 0, 24077, 0]
+end
 
-jupiter = Planet.new(
-  :texture  => :jupitermap,
-  :mass     => 1.899e27,
-  :radius   => 7.1e7,
-  :position => Vector[7.453e11, 0, 0],
-  :velocity => Vector[0,0,13000]
-)
+jupiter = Planet.new do |j|
+  j.texture  = :jupitermap
+  j.mass     = 1.899e27
+  j.radius   = 7.1e7
+  j.position = Vector[7.453e11, 0, 0, 0]
+  j.velocity = Vector[0,0,13000, 0]
+end
 
 world = Adder::World.instance
 world.gravity = true

@@ -11,14 +11,19 @@ module Adder
     GRAVITATION = 6.67384e-11 #N(m/kg)^2
 
     def initialize args = {}
-      rotation.translate!(*args[:position]) if args[:position]
-
+      self.position             = args[:position]  if args[:position]
       self.mass                 = args[:mass]                 || 10
-      self.velocity             = args[:velocity]             || Vector[0, 0, 0]
-      self.acceleration         = args[:acceleration]         || Vector[0, 0, 0]
+      self.velocity             = args[:velocity]             || Vector[0, 0, 0, 0]
+      self.acceleration         = args[:acceleration]         || Vector[0, 0, 0, 0]
 
-      self.angular_velocity     = args[:angular_velocity]     || Vector[0, 0, 0]
-      self.angular_acceleration = args[:angular_acceleration] || Vector[0, 0, 0]
+      self.angular_velocity     = args[:angular_velocity]     || Vector[0, 0, 0, 0]
+      self.angular_acceleration = args[:angular_acceleration] || Vector[0, 0, 0, 0]
+
+      yield self if block_given?
+    end
+
+    def position=(position)
+      rotation.translate!(*position)
     end
 
     def calculate(dt)
@@ -30,7 +35,7 @@ module Adder
 
       to_be_rotated = calculate_rotation(dt)
 
-      rotation.rotate!(to_be_rotated.magnitude, *to_be_rotated.directions)
+      rotation.rotate!(to_be_rotated.magnitude, *to_be_rotated.normalize) if to_be_rotated.magnitude > 0
 
       calculate_angular_velocity(dt)
     end
@@ -44,7 +49,7 @@ module Adder
     end
 
     def calculate_gravity(dt)
-      self.acceleration = Vector[0, 0, 0]
+      self.acceleration = Vector[0, 0, 0, 0]
       World.instance.bodies.each do |name, body|
         self.acceleration += (gravitational_force(body) * (1/mass)) unless body == self
       end
@@ -54,9 +59,9 @@ module Adder
       distance = distance_of(body)
 
       if distance.magnitude == 0
-        Vector[0, 0, 0]
+        Vector[0, 0, 0, 0]
       else
-        distance.directions * ((GRAVITATION * body.mass * mass)/(distance.magnitude**2))
+        distance.normalize * ((GRAVITATION * body.mass * mass)/(distance.magnitude**2))
       end
     end
 
@@ -70,39 +75,8 @@ module Adder
     end
 
     def distance_of(other)
-      (other.matrix.position_vector - matrix.position_vector)
+      (other.matrix.row_vectors.last - matrix.row_vectors.last)
     end
   end
 end
 
-class Vector
-  def **(num)
-    Vector[
-      self[0] > 0 ? self[0]**num : 0,
-      self[1] > 0 ? self[1]**num : 0,
-      self[2] > 0 ? self[2]**num : 0
-    ]
-  end
-
-  def abs
-    Vector[
-      self[0].abs,
-      self[1].abs,
-      self[2].abs
-    ]
-  end
-
-  def directions
-    self == Vector[0, 0, 0] ? self : self * (1/(self.magnitude).abs)
-  end
-end
-
-class Matrix
-  def position_vector
-    Vector[
-      self[3,0],
-      self[3,1],
-      self[3,2]
-      ]
-  end
-end
