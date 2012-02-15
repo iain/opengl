@@ -5,7 +5,7 @@ module Talisman
 
     def initialize(clock = Time)
       @clock = clock
-      assign({})
+      trigger
     end
 
     def register(attrs)
@@ -45,7 +45,7 @@ module Talisman
     end
 
     def trigger
-      assign history.last
+      assign(history.last || {})
     end
 
     def delta(field)
@@ -53,7 +53,17 @@ module Talisman
     end
 
     def changes(field)
-      history[-2..-1].map { |attr| attr[field] }
+      all = all(field)
+      [ all[-2], all[-1] ]
+    end
+
+    def total(field)
+      all = all(field).compact
+      [ all.last, all.first ].inject(&:-)
+    end
+
+    def all(field)
+      history.map { |attr| attr[field] }
     end
 
   end

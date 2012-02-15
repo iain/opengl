@@ -44,4 +44,12 @@ describe Talisman::Event do
     subject.changes(:x).should == [1,3]
   end
 
+  it "calculates totals" do
+    subject.register x: 1
+    subject.register x: 3
+    subject.register x: 2
+    subject.register x: 4
+    subject.total(:x).should == 3
+  end
+
 end
