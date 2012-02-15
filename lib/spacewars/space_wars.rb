@@ -54,7 +54,7 @@ class SpaceWars < Talisman::Controller
   end
 
   on "h" do
-    camera.yaw(-0.1)
+    camera.yaw(-0.01)
   end
 
   on "j" do
@@ -66,7 +66,7 @@ class SpaceWars < Talisman::Controller
   end
 
   on "l" do
-    camera.yaw( 0.1)
+    camera.yaw( 0.01)
   end
 
   on "f" do
@@ -84,16 +84,13 @@ class SpaceWars < Talisman::Controller
   def on_tick
     Adder::World.instance.over((time - @time))
 
-    # camera.set_position(Adder::World.instance.bodies[:moon])
-    # camera.yaw(Math::PI)
-
     @time = time
 
     spaceship.animate
   end
 
   def time
-    Time.now.to_f * 10000
+    Time.now.to_f * 86400/24
   end
 
 end
