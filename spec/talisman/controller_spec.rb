@@ -9,11 +9,11 @@ class TestController < Talisman::Controller
     @ticked = 0
   end
 
-  on "w" do
+  on key: "w" do
     key_pressed["w"] += 1
   end
 
-  on "a" do
+  on key: "a" do
     key_pressed["a"] += 1
  end
 
@@ -31,7 +31,7 @@ class WithEvents < Talisman::Controller
     @recorded_events = {}
   end
 
-  on "e" do |event|
+  on key: "e" do |event|
     @recorded_events["e"] = event
   end
 

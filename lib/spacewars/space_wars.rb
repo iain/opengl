@@ -9,80 +9,79 @@ class SpaceWars < Talisman::Controller
     @time = time
   end
 
-  on "w" do
+  on key: "w" do
     spaceship.pitch_down
   end
 
-  on "s" do
+  on key: "s" do
     spaceship.pitch_up
   end
 
-  on "a" do
+  on key: "a" do
     spaceship.roll_left
   end
 
-  on "d" do
+  on key: "d" do
     spaceship.roll_right
   end
 
-  on "z" do
+  on key: "z" do
     spaceship.yaw_left
   end
 
-  on "c" do
+  on key: "c" do
     spaceship.yaw_right
   end
 
-  on "x" do
+  on key: "x" do
     spaceship.reset_rotation
   end
 
-  on '[' do
+  on key: '[' do
     spaceship.accelerate
   end
 
-  on '\'' do
+  on key: '\'' do
     spaceship.brake
   end
 
-  on "=" do
+  on key: "=" do
     camera.zoom_in
   end
 
-  on "-" do
+  on key: "-" do
     camera.zoom_out
   end
 
-  on "h" do
+  on key: "h" do
     camera.yaw(-0.01)
   end
 
-  on "j" do
+  on key: "j" do
     camera.pitch( 0.1)
   end
 
-  on "k" do
+  on key: "k" do
     camera.pitch(-0.1)
   end
 
-  on "l" do
+  on key: "l" do
     camera.yaw( 0.01)
   end
 
-  on "f" do
+  on key: "f" do
     window.enter_full_screen
   end
 
-  on "F" do
+  on key: "F" do
     window.leave_full_screen
   end
 
-  on " "do
+  on key: " " do
     camera.follow_object = Adder::World.instance.bodies.values[Adder::World.instance.bodies.values.index(camera.follow_object) - 1]
-
   end
 
-  on "q" do
+  on key: "q" do
     exit
   end
 

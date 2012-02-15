@@ -5,7 +5,12 @@ module Talisman
 
     # TODO deprecate the use of anything other than hash as parameter
     def self.on(id_or_key, &action)
-      id = id_or_key.is_a?(Hash) ? id_or_key : { key: id_or_key }
+      if id_or_key.is_a?(Hash)
+        id = id_or_key
+      else
+        warn "DEPRECATION: use a hash to define an event handler: on key: '#{id_or_key}' do |event|"
+        id = { key: id_or_key }
+      end
       callbacks[id] = action
     end
 
