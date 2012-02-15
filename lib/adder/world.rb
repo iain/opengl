@@ -4,17 +4,18 @@ module Adder
   class World
     include Singleton
 
-    attr_accessor :bodies, :gravity
+    attr_accessor :bodies, :gravity, :time_multiplier
+
+    def initialize
+      self.bodies = {}
+      self.gravity = false
+      self.time_multiplier = 1
+    end
 
     def add_bodies hash
       hash.each do |name, body|
         self.bodies[name] = body
       end
-    end
-
-    def initialize
-      self.bodies = {}
-      self.gravity = false
     end
 
     def over dt

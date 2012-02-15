@@ -77,6 +77,11 @@ class SpaceWars < Talisman::Controller
     window.leave_full_screen
   end
 
+  on " "do
+    camera.follow_object = Adder::World.instance.bodies.values[Adder::World.instance.bodies.values.index(camera.follow_object) - 1]
+
+  end
+
   on "q" do
     exit
   end
@@ -90,7 +95,7 @@ class SpaceWars < Talisman::Controller
   end
 
   def time
-    Time.now.to_f * 86400/24
+    Time.now.to_f * Adder::World.instance.time_multiplier
   end
 
 end

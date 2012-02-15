@@ -1,6 +1,6 @@
 class PlanetView < Walker::View
   def draw
-    texture = Walker::Textures.instance.find(:earthmap,2)
+    texture = Walker::Textures.instance.find(@model.texture,2)
 
     glMultMatrix(@model.matrix)
 
