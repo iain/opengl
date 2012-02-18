@@ -14,6 +14,7 @@ GEM
       method_source (~> 0.7)
       slop (>= 2.4.4, < 3)
     rake (0.8.7)
+    rmagick (2.13.1)
     rspec (2.8.0)
       rspec-core (~> 2.8.0)
       rspec-expectations (~> 2.8.0)
@@ -35,5 +36,6 @@ DEPENDENCIES
   mkrf
   pry
   rake
+  rmagick
   rspec
   ruby-opengl2
