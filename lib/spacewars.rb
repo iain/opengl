@@ -1,21 +1,18 @@
 require 'spacewars/fuselage'
-require 'spacewars/planet'
-require 'spacewars/planet_view'
-require 'spacewars/moon'
-require 'spacewars/moon_view'
-require 'spacewars/star'
-require 'spacewars/star_view'
+require 'spacewars/celestial_body'
+require 'spacewars/celestial_body_view'
 require 'spacewars/space_wars'
 require 'spacewars/spaceship'
 
-camera = Walker::Camera.new( -4e6)
+$camera = camera = Walker::Camera.new( -4e6)
 
-sun = Star.new(
+sun = CelestialBody.new(
   :mass  => 1.9891e30,
-  :radius => 6.995e8
+  :radius => 6.995e8,
+  :texture => :sunmap
 )
 
-earth = Planet.new do |p|
+earth = CelestialBody.new do |p|
   p.mass             = 5.9736e24
   p.radius           = 6.358e6
   p.texture          = :earthmap
@@ -24,14 +21,15 @@ earth = Planet.new do |p|
   p.angular_velocity = Vector[0,(2*Math::PI/86400),0, 0]
 end
 
-moon  = Moon.new do |m|
+moon  = CelestialBody.new do |m|
   m.mass     = 7.3477e22
   m.radius   = 1.735e6
+  m.texture  = :moonmap
   m.position = Vector[1.500e11, 0, 0, 0]
   m.velocity = Vector[0, 0, 30802, 0]
 end
 
-mars = Planet.new do |m|
+mars = CelestialBody.new do |m|
   m.texture  = :marsmap
   m.mass     = 6.419e23
   m.radius   = 3.376e6
@@ -39,7 +37,7 @@ mars = Planet.new do |m|
   m.velocity = Vector[0, 0, 24077, 0]
 end
 
-jupiter = Planet.new do |j|
+jupiter = CelestialBody.new do |j|
   j.texture  = :jupitermap
   j.mass     = 1.899e27
   j.radius   = 7.1e7
@@ -47,9 +45,11 @@ jupiter = Planet.new do |j|
   j.velocity = Vector[0,0,13000, 0]
 end
 
+celestial_bodies = {:sun => sun, :earth => earth, :moon => moon, :mars => mars, :jupiter => jupiter}
+
 world = Adder::World.instance
 world.gravity = true
-world.add_bodies(:sun => sun, :earth => earth, :moon => moon, :mars => mars, :jupiter => jupiter)
+world.add_bodies(celestial_bodies)
 world.time_multiplier = 86400/24
 
 camera.follow_object = sun
@@ -62,12 +62,9 @@ space_wars = SpaceWars.new(camera, spaceship)
 window = Walker::Window.new(space_wars)
 
 window.views << Walker::CameraView.new(camera)
-window.views << StarView.new(sun)
-window.views << PlanetView.new(earth)
-window.views << PlanetView.new(mars)
-window.views << PlanetView.new(jupiter)
-window.views << MoonView.new(moon)
-window.views << Fuselage.new(spaceship)
+celestial_bodies.each do |key, value|
+  window.views << CelestialBodyView.new(value)
+end
 # window.views << SunView.new(Sun.new)
 
 window.start

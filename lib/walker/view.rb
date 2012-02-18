@@ -8,6 +8,7 @@ module Walker
 
     def draw!
       glPushMatrix
+      mult_matrix(@model.matrix)
       draw
       glPopMatrix
     end
@@ -31,6 +32,10 @@ module Walker
       glVertex(0, 0, 0)
       glVertex(0, 0,5e2)
       glEnd
+    end
+
+    def mult_matrix matrix
+      glMultMatrix($camera.matrix + matrix)
     end
 
   end

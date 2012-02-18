@@ -79,6 +79,7 @@ class SpaceWars < Talisman::Controller
 
   on key: " " do
     camera.follow_object = Adder::World.instance.bodies.values[Adder::World.instance.bodies.values.index(camera.follow_object) - 1]
+    p camera.follow_object.texture
   end
 
   on key: "q" do
