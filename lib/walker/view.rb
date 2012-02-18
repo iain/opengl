@@ -35,7 +35,8 @@ module Walker
     end
 
     def mult_matrix matrix
-      glMultMatrix($camera.matrix + matrix)
+      mm = matrix * $camera.rotation.matrix + $camera.rotation.translate(*$camera.matrix.row_vectors.last)
+      glMultMatrix(mm)
     end
 
   end

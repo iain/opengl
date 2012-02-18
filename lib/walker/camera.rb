@@ -20,15 +20,15 @@ module Walker
     end
 
     def roll(r)
-      self.rotation.matrix *= rotation.roll(r)
+      rotation.roll!(r)
     end
 
     def yaw(r)
-      self.rotation.matrix *= rotation.yaw(r)
+      rotation.yaw!(r)
     end
 
     def pitch(r)
-      self.rotation.matrix *= rotation.pitch(r)
+      rotation.pitch!(r)
     end
 
     # Change the matrix to allow for zooming

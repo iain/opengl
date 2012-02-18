@@ -58,11 +58,11 @@ class SpaceWars < Talisman::Controller
   end
 
   on key: "j" do
-    camera.pitch( 0.1)
+    camera.roll( 0.1)
   end
 
   on key: "k" do
-    camera.pitch(-0.1)
+    camera.roll(-0.1)
   end
 
   on key: "l" do

@@ -18,7 +18,7 @@ earth = CelestialBody.new do |p|
   p.texture          = :earthmap
   p.position         = Vector[1.496e11, 0, 0, 0]
   p.velocity         = Vector[0, 0, 29780, 0]
-  p.angular_velocity = Vector[0,(2*Math::PI/86400),0, 0]
+  # p.angular_velocity = Vector[0,(2*Math::PI/86400),0, 0]
 end
 
 moon  = CelestialBody.new do |m|
@@ -50,7 +50,7 @@ celestial_bodies = {:sun => sun, :earth => earth, :moon => moon, :mars => mars, 
 world = Adder::World.instance
 world.gravity = true
 world.add_bodies(celestial_bodies)
-world.time_multiplier = 86400/24
+world.time_multiplier = 86400
 
 camera.follow_object = sun
 
