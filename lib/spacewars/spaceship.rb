@@ -31,11 +31,11 @@ class Spaceship < Adder::Body
   end
 
   def accelerate
-    rotation.translate!(0,0,0.1)
+    rotation.translate!(0,0,-1e4)
   end
 
   def brake
-    rotation.translate!(0,0,-0.1)
+    rotation.translate!(0,0, 1e4)
   end
 
 end

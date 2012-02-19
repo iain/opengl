@@ -3,6 +3,7 @@ class CelestialBodyView < Walker::View
     mult_matrix(@model.matrix)
 
     texture = Walker::Textures.instance.find(@model.texture,2)
+    glMaterial(GL_FRONT_AND_BACK, GL_EMISSION, [0.5, 0.5, 0.5, 0.5])
 
     glRotate(90,-1,0,0) #fix sideway texture..
 

@@ -4,7 +4,7 @@ require 'spacewars/celestial_body_view'
 require 'spacewars/space_wars'
 require 'spacewars/spaceship'
 
-$camera = camera = Walker::Camera.new( -4e6)
+$camera = camera = Walker::Camera.new( -4e3)
 
 sun = CelestialBody.new(
   :mass  => 1.9891e30,
@@ -50,17 +50,19 @@ celestial_bodies = {:sun => sun, :earth => earth, :moon => moon, :mars => mars, 
 world = Adder::World.instance
 world.gravity = true
 world.add_bodies(celestial_bodies)
-world.time_multiplier = 86400
+world.time_multiplier = 1
 
 
 spaceship = Spaceship.new do |m|
   m.mass     = 2000
-  m.position = Vector[0, 0, 0, 0]
+  m.position = Vector[1.500e11, 0, 0, 0]
 end
 
-camera.follow_object = earth
+camera.follow_object = spaceship
 
 space_wars = SpaceWars.new(camera, spaceship)
+
+world.add_bodies(:spaceship => spaceship)
 
 window = Walker::Window.new(space_wars)
 
@@ -68,6 +70,6 @@ window.views << Walker::CameraView.new(camera)
 celestial_bodies.each do |key, value|
   window.views << CelestialBodyView.new(value)
 end
-# window.views << Fuselage.new(spaceship)
+window.views << Fuselage.new(spaceship)
 
 window.start

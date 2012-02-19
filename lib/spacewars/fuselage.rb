@@ -2,7 +2,7 @@ class Fuselage < Walker::View
 
   def draw
     mult_matrix(@model.matrix)
-    scale(1e2)
+    scale(1e4)
 
     draw_fuselage
     draw_wings
