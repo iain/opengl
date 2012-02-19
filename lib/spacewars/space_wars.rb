@@ -58,11 +58,11 @@ class SpaceWars < Talisman::Controller
   end
 
   on key: "j" do
-    camera.roll( 0.1)
+    camera.pitch( 0.01)
   end
 
   on key: "k" do
-    camera.roll(-0.1)
+    camera.pitch(-0.01)
   end
 
   on key: "l" do
@@ -90,8 +90,6 @@ class SpaceWars < Talisman::Controller
     Adder::World.instance.over((time - @time))
 
     @time = time
-
-    spaceship.animate
   end
 
   def time

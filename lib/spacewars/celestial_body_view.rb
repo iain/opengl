@@ -1,5 +1,7 @@
 class CelestialBodyView < Walker::View
   def draw
+    mult_matrix(@model.matrix)
+
     texture = Walker::Textures.instance.find(@model.texture,2)
 
     glRotate(90,-1,0,0) #fix sideway texture..

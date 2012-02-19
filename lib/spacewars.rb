@@ -52,10 +52,13 @@ world.gravity = true
 world.add_bodies(celestial_bodies)
 world.time_multiplier = 86400
 
-camera.follow_object = sun
 
+spaceship = Spaceship.new do |m|
+  m.mass     = 2000
+  m.position = Vector[0, 0, 0, 0]
+end
 
-spaceship = Spaceship.new
+camera.follow_object = earth
 
 space_wars = SpaceWars.new(camera, spaceship)
 
@@ -65,6 +68,6 @@ window.views << Walker::CameraView.new(camera)
 celestial_bodies.each do |key, value|
   window.views << CelestialBodyView.new(value)
 end
-# window.views << SunView.new(Sun.new)
+# window.views << Fuselage.new(spaceship)
 
 window.start

@@ -1,10 +1,6 @@
-class Spaceship
+class Spaceship < Adder::Body
 
   include Walker::Rotation
-
-  def animate
-    rotation.yaw!(0.01)
-  end
 
   def roll_left
     rotation.roll!(-0.1)

@@ -8,7 +8,6 @@ module Walker
 
     def draw!
       glPushMatrix
-      mult_matrix(@model.matrix)
       draw
       glPopMatrix
     end
@@ -35,8 +34,11 @@ module Walker
     end
 
     def mult_matrix matrix
-      mm = matrix * $camera.rotation.matrix + $camera.rotation.translate(*$camera.matrix.row_vectors.last)
-      glMultMatrix(mm)
+      glMultMatrix(matrix * $camera.matrix)
+    end
+
+    def scale(r)
+      glScale(r,r,r)
     end
 
   end
