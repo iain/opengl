@@ -77,9 +77,17 @@ class SpaceWars < Talisman::Controller
     window.leave_full_screen
   end
 
-  on key: " " do
+  on key: "t" do
     camera.follow_object = Adder::World.instance.bodies.values[Adder::World.instance.bodies.values.index(camera.follow_object) - 1]
     # p camera.follow_object.texture
+  end
+
+  on key: " " do
+    spaceship.engage_warp
+  end
+
+  on key: "c" do
+    spaceship.disengage_warp
   end
 
   on key: "q" do
@@ -88,6 +96,8 @@ class SpaceWars < Talisman::Controller
 
   def on_tick
     Adder::World.instance.over((time - @time))
+    spaceship.calculate_warp_speed if spaceship.in_warp
+    # p spaceship.velocity
 
     @time = time
   end
