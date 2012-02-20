@@ -55,8 +55,9 @@ world.time_multiplier = 1
 
 spaceship = Spaceship.new do |m|
   m.mass     = 2000
-  m.position = Vector[1.500e11, 0, 0, 0]
+  m.position = Vector[1.496e11, 0, 4e7, 0]
 end
+spaceship.yaw Math::PI / 2
 
 camera.follow_object = spaceship
 

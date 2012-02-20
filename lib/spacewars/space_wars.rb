@@ -9,33 +9,33 @@ class SpaceWars < Talisman::Controller
     @time = time
   end
 
-  on key: "w" do
-    spaceship.pitch_down
+  on key: "w" do |e|
+    spaceship.pitch(-e.duration)
   end
 
-  on key: "s" do
-    spaceship.pitch_up
+  on key: "s" do |e|
+    spaceship.pitch(e.duration)
   end
 
-  on key: "a" do
-    spaceship.roll_left
+  on key: "a" do |e|
+    spaceship.roll(-e.duration)
   end
 
-  on key: "d" do
-    spaceship.roll_right
+  on key: "d" do |e|
+    spaceship.roll(e.duration)
   end
 
-  on key: "z" do
-    spaceship.yaw_left
+  on key: "z" do |e|
+    spaceship.yaw(-e.duration)
   end
 
-  on key: "c" do
-    spaceship.yaw_right
+  on key: "c" do |e|
+    spaceship.yaw(e.duration)
   end
 
-  on key: "x" do
-    spaceship.reset_rotation
-  end
+  # on key: "x" do
+  #   spaceship.reset_rotation
+  # end
 
   on key: '[' do
     spaceship.accelerate
@@ -86,7 +86,7 @@ class SpaceWars < Talisman::Controller
     spaceship.engage_warp
   end
 
-  on key: "c" do
+  on key: "x" do
     spaceship.disengage_warp
   end
 

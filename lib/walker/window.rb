@@ -58,7 +58,7 @@ module Walker
       glViewport 0, 0, width, height
       glMatrixMode(GL_PROJECTION)
       glLoadIdentity
-      gluPerspective(60, width / height, 1e5, 1e18)
+      gluPerspective(5, width / height, 1e5, 1e18)
       glMatrixMode(GL_MODELVIEW)
     end
 

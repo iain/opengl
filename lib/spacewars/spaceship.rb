@@ -2,34 +2,24 @@ class Spaceship < Adder::Body
 
   attr_accessor :in_warp
 
+  TURN_SPEED = 1.0
+
   include Walker::Rotation
 
-  def roll_left
-    rotation.roll!(-0.1) unless in_warp
+  def roll(duration)
+    rotation.roll!(TURN_SPEED * duration) unless in_warp
   end
 
-  def roll_right
-    rotation.roll!(0.1) unless in_warp
-  end
-
-  def yaw_left
-    rotation.yaw!(-0.1) unless in_warp
-  end
-
-  def yaw_right
-    rotation.yaw!(0.1) unless in_warp
+  def yaw(duration)
+    rotation.yaw!(TURN_SPEED * duration) unless in_warp
   end
 
   def reset_rotation
     rotation.reset
   end
 
-  def pitch_down
-    rotation.pitch!( 0.1) unless in_warp
-  end
-
-  def pitch_up
-    rotation.pitch!(-0.1) unless in_warp
+  def pitch(duration)
+    rotation.pitch!(TURN_SPEED * duration * 0.5) unless in_warp
   end
 
   def accelerate
