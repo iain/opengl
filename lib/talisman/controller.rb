@@ -11,6 +11,9 @@ module Talisman
         warn "DEPRECATION: use a hash to define an event handler: on key: '#{id_or_key}' do |event|"
         id = { key: id_or_key }
       end
+      if callbacks.has_key?(id)
+        warn "Warning: already assigned event #{id.inspect} on #{self.name}"
+      end
       callbacks[id] = action
     end
 

@@ -85,6 +85,12 @@ describe Talisman::Controller do
     }.to(1)
   end
 
+  it "warns against double assigning keys" do
+    TestController.on(key: 'foo')
+    TestController.should_receive(:warn).with('Warning: already assigned event {:key=>"foo"} on TestController')
+    TestController.on(key: 'foo')
+  end
+
   it "gets events" do
     x, y = stub, stub
     subject = WithEvents.new
