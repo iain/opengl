@@ -6,20 +6,32 @@ class Spaceship < Adder::Body
 
   include Walker::Rotation
 
-  def roll(duration)
-    rotation.roll!(TURN_SPEED * duration) unless in_warp
+  def roll_left(dt)
+    rotation.roll!(-TURN_SPEED * dt) unless in_warp
   end
 
-  def yaw(duration)
-    rotation.yaw!(TURN_SPEED * duration) unless in_warp
+  def roll_right(dt)
+    rotation.roll!(TURN_SPEED * dt) unless in_warp
+  end
+
+  def yaw_left(dt)
+    rotation.yaw!(-TURN_SPEED * dt) unless in_warp
+  end
+
+  def yaw_right(dt)
+    rotation.yaw!(TURN_SPEED * dt) unless in_warp
   end
 
   def reset_rotation
     rotation.reset
   end
 
-  def pitch(duration)
-    rotation.pitch!(TURN_SPEED * duration * 0.5) unless in_warp
+  def pitch_down(dt)
+    rotation.pitch!( TURN_SPEED/2 * dt) unless in_warp
+  end
+
+  def pitch_up(dt)
+    rotation.pitch!(-TURN_SPEED/2 * dt) unless in_warp
   end
 
   def accelerate

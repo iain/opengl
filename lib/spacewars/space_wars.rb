@@ -7,30 +7,31 @@ class SpaceWars < Talisman::Controller
   def initialize(camera, spaceship)
     @camera, @spaceship = camera, spaceship
     @time = time
+    @dt   = 0
   end
 
-  on key: "w" do |e|
-    spaceship.pitch(-e.duration)
+  on key: "w" do
+    spaceship.pitch_down(@dt)
   end
 
-  on key: "s" do |e|
-    spaceship.pitch(e.duration)
+  on key: "s" do
+    spaceship.pitch_up(@dt)
   end
 
-  on key: "a" do |e|
-    spaceship.roll(-e.duration)
+  on key: "a" do
+    spaceship.roll_left(@dt)
   end
 
-  on key: "d" do |e|
-    spaceship.roll(e.duration)
+  on key: "d" do
+    spaceship.roll_right(@dt)
   end
 
-  on key: "z" do |e|
-    spaceship.yaw(-e.duration)
+  on key: "z" do
+    spaceship.yaw_left(@dt)
   end
 
-  on key: "c" do |e|
-    spaceship.yaw(e.duration)
+  on key: "c" do
+    spaceship.yaw_right(@dt)
   end
 
   # on key: "x" do
@@ -95,7 +96,8 @@ class SpaceWars < Talisman::Controller
   end
 
   def on_tick
-    Adder::World.instance.over((time - @time))
+    @dt = (time - @time)
+    Adder::World.instance.over(@dt)
     spaceship.calculate_warp_speed if spaceship.in_warp
     # p spaceship.velocity
 

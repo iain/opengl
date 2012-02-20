@@ -3,6 +3,7 @@ require 'spacewars/celestial_body'
 require 'spacewars/celestial_body_view'
 require 'spacewars/space_wars'
 require 'spacewars/spaceship'
+require 'spacewars/hud'
 
 $camera = camera = Walker::Camera.new( -4e3)
 
@@ -57,7 +58,6 @@ spaceship = Spaceship.new do |m|
   m.mass     = 2000
   m.position = Vector[1.496e11, 0, 4e7, 0]
 end
-spaceship.yaw Math::PI / 2
 
 camera.follow_object = spaceship
 
@@ -68,9 +68,11 @@ world.add_bodies(:spaceship => spaceship)
 window = Walker::Window.new(space_wars)
 
 window.views << Walker::CameraView.new(camera)
+window.views << HudView.new(Hud.new)
 celestial_bodies.each do |key, value|
   window.views << CelestialBodyView.new(value)
 end
+
 window.views << Fuselage.new(spaceship)
 
 window.start
