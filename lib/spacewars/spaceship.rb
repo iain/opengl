@@ -2,9 +2,14 @@ class Spaceship < Adder::Body
 
   attr_accessor :in_warp
 
+  VMAX = 3e8 * 20  #max warp speed
   TURN_SPEED = 1.0
 
   include Walker::Rotation
+
+  def warp_speed
+    VMAX
+  end
 
   def roll_left(dt)
     rotation.roll!(-TURN_SPEED * dt) unless in_warp
@@ -61,13 +66,12 @@ class Spaceship < Adder::Body
   def calculate_warp_speed
     t    = Time.now.to_f - @time_since_engage
     k    = 0.5 #1/versnelling
-    vmax = 3e8 * 20  #max warp speed
 
     if stopping?
       self.velocity = Vector[0, 0, -(velocity[2].abs * Math.exp(-t * k)), 0]
       out_of_warp if velocity[2].abs < 1000
     else
-      self.velocity = Vector[0, 0, -(vmax - vmax * Math.exp(-t * k)), 0]
+      self.velocity = Vector[0, 0, -(VMAX - VMAX * Math.exp(-t * k)), 0]
     end
   end
 
