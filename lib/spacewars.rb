@@ -68,7 +68,7 @@ world.add_bodies(:spaceship => spaceship)
 window = Walker::Window.new(space_wars)
 
 window.views << Walker::CameraView.new(camera)
-window.views << HudView.new(Hud.new)
+# window.views << HudView.new(Hud.new)
 celestial_bodies.each do |key, value|
   window.views << CelestialBodyView.new(value)
 end
