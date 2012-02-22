@@ -8,6 +8,9 @@ class Fuselage < Walker::View
     end
     scale(1e4)
 
+    glMaterial(GL_FRONT_AND_BACK, GL_EMISSION, [0.0, 0.0, 0.0, 0.0])
+
+    glEnable(GL_COLOR_MATERIAL)
     draw_middle
     draw_engine( 4,1, 6)
     draw_engine(-4,1, 6)
@@ -15,6 +18,8 @@ class Fuselage < Walker::View
     draw_dish_connection
 
     draw_dish
+
+    glDisable(GL_COLOR_MATERIAL)
   end
 
   def draw_dish

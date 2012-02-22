@@ -3,6 +3,7 @@ class CelestialBodyView < Walker::View
     mult_matrix(@model.matrix)
 
     texture = Walker::Textures.instance.find(@model.texture,2)
+
     glMaterial(GL_FRONT_AND_BACK, GL_EMISSION, [0.5, 0.5, 0.5, 0.5])
 
     glRotate(90,-1,0,0) #fix sideway texture..
@@ -15,6 +16,8 @@ class CelestialBodyView < Walker::View
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D, texture);
     gluSphere(quadro, @model.radius, 360, 360);
+
+
     glDisable(GL_TEXTURE_2D);
     gluDeleteQuadric(quadro);
   end

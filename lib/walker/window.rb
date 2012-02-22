@@ -77,8 +77,6 @@ module Walker
 
       glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
 
-      glEnable(GL_COLOR_MATERIAL)
-
       #lighting and lighting position _Abstraction would be nice...
       glEnable(GL_LIGHTING)
       glEnable(GL_LIGHT0)
