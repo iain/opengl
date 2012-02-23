@@ -15,6 +15,10 @@ module Clynish
       glVertex(x, y, z)
     end
 
+    def color(*args)
+      glColor(*args)
+    end
+
     def circle(radius, z_slices, x = 0, y = 0, z = 0)
 
       # Draw.new(GL_TRIANGLE_FAN) do |draw|
@@ -32,7 +36,7 @@ module Clynish
         x = Math.cos(deg) * radius
         y = Math.sin(deg) * radius
 
-        yield x, y
+        yield x, y, deg
       end
     end
   end
