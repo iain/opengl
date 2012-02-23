@@ -1,49 +1,17 @@
-require 'spacewars/spaceship'
-
 class SpaceWars < Talisman::Controller
 
-  attr_reader :camera, :spaceship
+  attr_reader :camera, :block
 
-  def initialize(camera, spaceship)
-    @camera, @spaceship = camera, spaceship
+  def initialize(camera, block)
+    @camera = camera
+    @block  = block
+
     @time = time
     @dt   = 0
   end
 
-  on key: "w" do
-    spaceship.pitch_down(@dt)
-  end
-
-  on key: "s" do
-    spaceship.pitch_up(@dt)
-  end
-
-  on key: "a" do
-    spaceship.roll_left(@dt)
-  end
-
-  on key: "d" do
-    spaceship.roll_right(@dt)
-  end
-
-  on key: "z" do
-    spaceship.yaw_left(@dt)
-  end
-
-  on key: "c" do
-    spaceship.yaw_right(@dt)
-  end
-
-  # on key: "x" do
-  #   spaceship.reset_rotation
-  # end
-
-  on key: '[' do
-    spaceship.accelerate
-  end
-
-  on key: '\'' do
-    spaceship.brake
+  on key: " " do
+    block.plane.cut(0)
   end
 
   on key: "=" do
@@ -83,25 +51,11 @@ class SpaceWars < Talisman::Controller
     # p camera.follow_object.texture
   end
 
-  on key: " " do
-    spaceship.engage_warp
-  end
-
-  on key: "x" do
-    spaceship.disengage_warp
-  end
-
   on key: "q" do
     exit
   end
 
   def on_tick
-    @dt = (time - @time)
-    Adder::World.instance.over(@dt)
-    spaceship.calculate_warp_speed if spaceship.in_warp
-    # p spaceship.velocity
-
-    @time = time
   end
 
   def time
