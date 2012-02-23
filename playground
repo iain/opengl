@@ -4,6 +4,7 @@
 require 'talisman'
 require 'walker'
 require 'adder'
+require 'clynish'
 
 # load game
 require 'spacewars'

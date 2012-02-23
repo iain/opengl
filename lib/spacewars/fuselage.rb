@@ -1,4 +1,5 @@
 class Fuselage < Walker::View
+  include Clynish
 
   def draw
     mult_matrix(@model.matrix)
@@ -11,6 +12,7 @@ class Fuselage < Walker::View
     glMaterial(GL_FRONT_AND_BACK, GL_EMISSION, [0.0, 0.0, 0.0, 0.0])
 
     glEnable(GL_COLOR_MATERIAL)
+
     draw_middle
     draw_engine( 4,1, 6)
     draw_engine(-4,1, 6)
@@ -25,53 +27,53 @@ class Fuselage < Walker::View
   def draw_dish
     #bottom dish
     glColor(0.5, 0.5, 0.5)
-    glBegin(GL_TRIANGLE_FAN)
-    glVertex(0, -0.8, 0)
     size = 5
-    37.times do |i|
-      deg = i * 2 * Math::PI / 36
-      glColor(0.3, 0.3, 0.3)
-      glVertex(Math.cos(deg) * size, 0, Math.sin(deg) * size)
+    Draw.new(GL_TRIANGLE_FAN) do |draw|
+      draw.vertex(0, -0.8, 0)
+      37.times do |i|
+        deg = i * 2 * Math::PI / 36
+        glColor(0.3, 0.3, 0.3)
+        draw.vertex(Math.cos(deg) * size, 0, Math.sin(deg) * size)
+      end
     end
-    glEnd
 
     #dish width
-    glBegin(GL_QUADS)
-    step = 2 * Math::PI / 36
-    36.times do |i|
-      deg = i * step
-      glVertex(Math.cos(deg) * size, 0, Math.sin(deg) * size)
-      glVertex(Math.cos(deg) * size, 1, Math.sin(deg) * size)
-      glVertex(Math.cos(deg + step) * size, 1, Math.sin(deg + step) * size)
-      glVertex(Math.cos(deg + step) * size, 0, Math.sin(deg + step) * size)
+    Draw.new(GL_QUADS) do
+      step = 2 * Math::PI / 36
+      36.times do |i|
+        deg = i * step
+        glVertex(Math.cos(deg) * size, 0, Math.sin(deg) * size)
+        glVertex(Math.cos(deg) * size, 1, Math.sin(deg) * size)
+        glVertex(Math.cos(deg + step) * size, 1, Math.sin(deg + step) * size)
+        glVertex(Math.cos(deg + step) * size, 0, Math.sin(deg + step) * size)
+      end
     end
-    glEnd
 
     #top dish
     glColor(0.5, 0.5, 0.5)
-    glBegin(GL_TRIANGLE_FAN)
-    glVertex(0, 1, 0)
-    37.times do |i|
-      deg = i * 2 * Math::PI / 36
-      glVertex(Math.cos(deg) * size, 1, Math.sin(deg) * size)
+    Draw.new(GL_TRIANGLE_FAN) do
+      glVertex(0, 1, 0)
+      37.times do |i|
+        deg = i * 2 * Math::PI / 36
+        glVertex(Math.cos(deg) * size, 1, Math.sin(deg) * size)
+      end
     end
-    glEnd
 
     #second row
-    glBegin(GL_QUADS)
-    step = 2 * Math::PI / 36
-    size = 2.5
-    inner_size = 1.1
-    37.times do |i|
-      deg = i * step
-      glColor(0.4, 0.4, 0.4)
-      glVertex(Math.cos(deg)        * size       ,1  , Math.sin(deg       ) * size)
-      glVertex(Math.cos(deg + step) * size       ,1  , Math.sin(deg + step) * size)
-      glColor(0.3, 0.3, 0.3)
-      glVertex(Math.cos(deg + step) * inner_size ,1.5, Math.sin(deg + step) * inner_size)
-      glVertex(Math.cos(deg       ) * inner_size ,1.5, Math.sin(deg       ) * inner_size)
+    Draw.new(GL_QUADS) do
+      step = 2 * Math::PI / 36
+      size = 2.5
+      inner_size = 1.1
+      37.times do |i|
+        deg = i * step
+        glColor(0.4, 0.4, 0.4)
+        glVertex(Math.cos(deg)        * size       ,1  , Math.sin(deg       ) * size)
+        glVertex(Math.cos(deg + step) * size       ,1  , Math.sin(deg + step) * size)
+        glColor(0.3, 0.3, 0.3)
+        glVertex(Math.cos(deg + step) * inner_size ,1.5, Math.sin(deg + step) * inner_size)
+        glVertex(Math.cos(deg       ) * inner_size ,1.5, Math.sin(deg       ) * inner_size)
+      end
     end
-    glEnd
 
     #little bubble on top
     glTranslate(0, 0.5, 0)
@@ -82,78 +84,62 @@ class Fuselage < Walker::View
   def draw_middle
 
     #tube
-    step = 2 * Math::PI / 36
     size = 0.7
     y = -3
     z =  1
-    glBegin(GL_QUADS)
-    glColor(0.3, 0.3, 0.3)
-    37.times do |i|
-      deg = i * step
-      glVertex(Math.cos(deg) * size       , Math.sin(deg) * size + y       , z)
-      glVertex(Math.cos(deg) * size       , Math.sin(deg) * size + y       , 7 + z)
-      glVertex(Math.cos(deg + step) * size, Math.sin(deg + step) * size + y, 7 + z)
-      glVertex(Math.cos(deg + step) * size, Math.sin(deg + step) * size + y, z)
+    Draw.new(GL_TRIANGLE_STRIP) do |draw|
+      glColor(0.3, 0.3, 0.3)
+      draw.circle(size, 36, 0, y, z) do |x0,y0|
+        draw.vertex(x0, y0 + y, z)
+        draw.vertex(x0, y0 + y, 7 + z)
+      end
     end
-    glEnd
 
     #circle at end
-
-    glBegin(GL_TRIANGLE_FAN)
-    glColor(0,0,0)
-    glVertex(0, y, 7 + z)
-    37.times do |i|
-      deg = i * step
-      glVertex(Math.cos(deg) * size, Math.sin(deg) * size + y, 7 + z)
+    Draw.new(GL_TRIANGLE_FAN) do |draw|
+      glColor(0,0,0)
+      draw.circle(size, 36, 0, y, 7 + z) do |x0, y0|
+        draw.vertex(x0, y0 + y, 7 + z)
+      end
     end
-    glEnd
+
 
     #circle at front
 
-    glBegin(GL_TRIANGLE_FAN)
-    glColor(0.5,0.5,0.5)
-    glVertex(0, y, 7 + z)
-    37.times do |i|
-      deg = i * step
-      glVertex(Math.cos(deg) * size, Math.sin(deg) * size + y, z)
+    Draw.new(GL_TRIANGLE_FAN) do |draw|
+      glColor(0.5,0.5,0.5)
+      draw.circle(size, 36, 0, y, z) do |x0, y0|
+        draw.vertex(x0, y0 + y, z)
+      end
     end
-    glEnd
   end
 
   def draw_engine(x, y, z)
     step = 2 * Math::PI / 36
     size = 0.5
-    glBegin(GL_QUADS)
-    glColor(0.3, 0.3, 0.3)
-    37.times do |i|
-      deg = i * step
-      glVertex(Math.cos(deg) * size + x, Math.sin(deg) * size + y, z)
-      glVertex(Math.cos(deg) * size + x, Math.sin(deg) * size + y, 5 + z)
-      glVertex(Math.cos(deg + step) * size + x, Math.sin(deg + step) * size + y, 5 + z)
-      glVertex(Math.cos(deg + step) * size + x, Math.sin(deg + step) * size + y, z)
+    Draw.new(GL_TRIANGLE_STRIP) do |draw|
+      glColor(0.3, 0.3, 0.3)
+      draw.circle(size, 36,x, y, z) do |x0, y0|
+        draw.vertex(x0 + x, y0 + y, z)
+        draw.vertex(x0 + x, y0 + y, 5 + z)
+      end
     end
-    glEnd
 
+    glColor(0.8,0.2,0.2)
     #red front circle
-    glBegin(GL_TRIANGLE_FAN)
-    glColor(0.8,0.4,0.4)
-    glVertex(x, y, z)
-    37.times do |i|
-      deg = i * step
-      glVertex(Math.cos(deg) * size + x, Math.sin(deg) * size + y, z)
+    Draw.new(GL_TRIANGLE_FAN) do |draw|
+      draw.circle(size,36,x,y,z) do |x0,y0|
+        draw.vertex(x0 + x, y0 + y, z)
+      end
     end
-    glEnd
 
     #black end circle
-    glBegin(GL_TRIANGLE_FAN)
-    glColor(0,0,0)
-    glVertex(x, y, z)
     z += 5
-    37.times do |i|
-      deg = i * step
-      glVertex(Math.cos(deg) * size + x, Math.sin(deg) * size + y, z)
+    Draw.new(GL_TRIANGLE_FAN) do |draw|
+      draw.circle(size,36,x,y,z) do |x0,y0|
+        draw.vertex(x0 + x, y0 + y, z)
+      end
     end
-    glEnd
   end
 
   def draw_engine_connections
@@ -164,25 +150,25 @@ class Fuselage < Walker::View
 
     step = 2 * Math::PI / 36
     size = 0.2
-    glBegin(GL_QUADS)
-    glColor(0.2,0.2,0.2)
-    37.times do |i|
-      deg = i * step
-      glVertex(Math.cos(deg)        * size + x    , y    , Math.sin(deg)        * size + z)
-      glVertex(Math.cos(deg)        * size + x + 4, y + 4, Math.sin(deg)        * size + z)
-      glVertex(Math.cos(deg + step) * size + x + 4, y + 4, Math.sin(deg + step) * size + z)
-      glVertex(Math.cos(deg + step) * size + x    , y    , Math.sin(deg + step) * size + z)
-    end
+    Draw.new(GL_QUADS) do
+      glColor(0.2,0.2,0.2)
+      37.times do |i|
+        deg = i * step
+        glVertex(Math.cos(deg)        * size + x    , y    , Math.sin(deg)        * size + z)
+        glVertex(Math.cos(deg)        * size + x + 4, y + 4, Math.sin(deg)        * size + z)
+        glVertex(Math.cos(deg + step) * size + x + 4, y + 4, Math.sin(deg + step) * size + z)
+        glVertex(Math.cos(deg + step) * size + x    , y    , Math.sin(deg + step) * size + z)
+      end
 
-    37.times do |i|
-      deg = i * step
-      glVertex(Math.cos(deg)        * size + x    , y    , Math.sin(deg)        * size + z)
-      glVertex(Math.cos(deg)        * size + x - 4, y + 4, Math.sin(deg)        * size + z)
-      glVertex(Math.cos(deg + step) * size + x - 4, y + 4, Math.sin(deg + step) * size + z)
-      glVertex(Math.cos(deg + step) * size + x    , y    , Math.sin(deg + step) * size + z)
-    end
+      37.times do |i|
+        deg = i * step
+        glVertex(Math.cos(deg)        * size + x    , y    , Math.sin(deg)        * size + z)
+        glVertex(Math.cos(deg)        * size + x - 4, y + 4, Math.sin(deg)        * size + z)
+        glVertex(Math.cos(deg + step) * size + x - 4, y + 4, Math.sin(deg + step) * size + z)
+        glVertex(Math.cos(deg + step) * size + x    , y    , Math.sin(deg + step) * size + z)
+      end
 
-    glEnd
+    end
   end
 
   def draw_dish_connection
@@ -192,15 +178,15 @@ class Fuselage < Walker::View
 
     step = 2 * Math::PI / 36
     size = 0.5
-    glBegin(GL_QUADS)
-    glColor(0.2,0.2,0.2)
-    37.times do |i|
-      deg = i * step
-      glVertex(Math.cos(deg)        * size + x    , y    , Math.sin(deg)        * size * 2 + z)
-      glVertex(Math.cos(deg)        * size + x    , y + 4, Math.sin(deg)        * size * 2 - 2 + z)
-      glVertex(Math.cos(deg + step) * size + x    , y + 4, Math.sin(deg + step) * size * 2 - 2 + z)
-      glVertex(Math.cos(deg + step) * size + x    , y    , Math.sin(deg + step) * size * 2 + z)
+    Draw.new(GL_QUADS) do
+      glColor(0.2,0.2,0.2)
+      37.times do |i|
+        deg = i * step
+        glVertex(Math.cos(deg)        * size + x    , y    , Math.sin(deg)        * size * 2 + z)
+        glVertex(Math.cos(deg)        * size + x    , y + 4, Math.sin(deg)        * size * 2 - 2 + z)
+        glVertex(Math.cos(deg + step) * size + x    , y + 4, Math.sin(deg + step) * size * 2 - 2 + z)
+        glVertex(Math.cos(deg + step) * size + x    , y    , Math.sin(deg + step) * size * 2 + z)
+      end
     end
-    glEnd
   end
 end
