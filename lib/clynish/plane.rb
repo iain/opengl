@@ -12,8 +12,38 @@ module Clynish
       self.vertices << [x,y, z]
     end
 
-    def cut(*function)
+    def cut(function)
+      find_replacement_vertices(function).each_with_index do |new_vertices, index|
+        next if new_vertices.nil?
 
+        to_be_deleted = vertices[index]
+
+        new_vertices.each do |vertex|
+          vertices.insert(index, vertex)
+        end
+
+        vertices.delete(to_be_deleted)
+      end
+
+    end
+
+    def find_replacement_vertices(cut_function)
+      replacement_vertices = []
+
+      vertices.combination(2).each do |vertii|
+        new_vertex = find_new_vertex(cut_function, *vertii)
+        if new_vertex
+          if to_be_deleted_vertex?(cut_function, vertii[0])
+            replacement_vertex = vertii[0]
+          else
+            replacement_vertex = vertii[1]
+          end
+
+          (replacement_vertices[vertices.index(replacement_vertex)] ||= []) << new_vertex
+        end
+      end
+
+      replacement_vertices
     end
 
     def find_new_vertex(cut_function, *vertii)

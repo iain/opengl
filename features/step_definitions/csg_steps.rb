@@ -31,6 +31,12 @@ Then /^I should have the following vertices to be removed:$/ do |table|
   points.should == table.raw.map { |t| t.collect(&:to_f) }
 end
 
+Then /^I should have the following vertices replacing the removed vertex:$/ do |table|
+  replacement_vertices = []
+  @p.find_replacement_vertices(@cut_function)[2].should == table.raw.map { |t| t.collect(&:to_f) }
+
+end
+
 ### ### ### ###
 
 Then /^I should see the following vertices:$/ do |table|

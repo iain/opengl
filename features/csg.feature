@@ -42,7 +42,17 @@ Feature: CSG Object cutting
       | 1 | 1 | 0 |
       | 2 | 0 | 0 |
 
-  @wip
+  Scenario: Find the vertices that are going to replace the removed vertices
+    Given I have the following vertices:
+      | 0 | 0 | 0 |
+      | 1 | 1 | 0 |
+      | 2 | 0 | 0 |
+    When I cut with -1 + 1x
+    Then I should have the following vertices replacing the removed vertex:
+      | 1   | 0  | 0 |
+      | 1.5 | .5 | 0 |
+
+
   Scenario: Cut plane through half
     Given I have the following vertices:
       | 0 | 0 | 0 |
