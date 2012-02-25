@@ -14,9 +14,8 @@ module Clynish
 
     def cut(function)
       find_replacement_vertices(function).each_with_index do |new_vertices, index|
-        next if new_vertices.nil?
-
         to_be_deleted = vertices[index]
+        next if new_vertices.nil?
 
         new_vertices.each do |vertex|
           vertices.insert(index, vertex)
@@ -38,7 +37,6 @@ module Clynish
           else
             replacement_vertex = vertii[1]
           end
-
           (replacement_vertices[vertices.index(replacement_vertex)] ||= []) << new_vertex
         end
       end
@@ -50,7 +48,7 @@ module Clynish
       vertices_function = create_function(*vertii)
 
       x = cross_function(cut_function, vertices_function)
-      if x.finite?
+      if x.finite? && within_plane?(vertii[0][0], vertii[1][0], x)
         [x, cut_function[0] + cut_function[1] * x, 0]
       else
         nil
@@ -79,6 +77,12 @@ module Clynish
       dy = vertex_2[1] - vertex_1[1]
 
       [vertex_1[1] - vertex_1[0] * (dy / dx), (dy / dx),0]
+    end
+
+    def within_plane?(a,b,c)
+      b, a = a, b if b > a
+
+      (a > c && b < c)
     end
 
     def calculate(y0,y,x)

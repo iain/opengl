@@ -23,6 +23,16 @@ Feature: CSG Object cutting
       | 1   | 0  | 0 |
       | 1.5 | .5 | 0 |
 
+  Scenario: Find points between vertices function where the cut hits
+    Given I have the following vertices:
+      | 0 | 0 | 0 |
+      | 1 | 1 | 0 |
+      | 2 | 0 | 0 |
+    When I cut with -0.5 + 2x
+    Then I find the following points:
+      | 0.5  | .5 | 0 |
+      | 0.25 | 0  | 0 |
+
   Scenario: Find the to be deleted vertices at the right side of the cut line
     Given I have the following vertices:
       | 0 | 0 | 0 |
@@ -64,3 +74,14 @@ Feature: CSG Object cutting
       | 1   | 1  | 0 |
       | 1.5 | .5 | 0 |
       | 1   | 0  | 0 |
+
+  Scenario: Cut plane through with different function
+    Given I have the following vertices:
+      | 0 | 0 | 0 |
+      | 1 | 1 | 0 |
+      | 2 | 0 | 0 |
+    When I cut with -0.5 + 2x
+    Then I should see the following vertices:
+      | 0    | 0   | 0 |
+      | 0.5  | 0.5 | 0 |
+      | 0.25 | 0   | 0 |
