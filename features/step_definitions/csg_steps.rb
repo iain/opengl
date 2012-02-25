@@ -15,7 +15,7 @@ Then /^the functions should be:$/ do |table|
     @p.create_function(*vertii)
   end
 
-  functions.should == table.raw.map { |t| t.collect(&:to_f) }
+  functions.should be_vertex_map_like(table.raw)
 end
 
 Then /^I find the following points:$/ do |table|
@@ -23,17 +23,17 @@ Then /^I find the following points:$/ do |table|
     @p.find_new_vertex(@cut_function, *v)
   end
 
-  points.compact.should == table.raw.map { |t| t.collect(&:to_f) }
+  points.compact.should be_vertex_map_like(table.raw)
 end
 
 Then /^I should have the following vertices to be removed:$/ do |table|
   points = @p.find_to_be_deleted_vertices(@cut_function)
-  points.should == table.raw.map { |t| t.collect(&:to_f) }
+  points.should be_vertex_map_like(table.raw)
 end
 
 Then /^I should have the following vertices replacing the removed vertex:$/ do |table|
   replacement_vertices = []
-  @p.find_replacement_vertices(@cut_function)[2].should == table.raw.map { |t| t.collect(&:to_f) }
+  @p.find_replacement_vertices(@cut_function)[2].should be_vertex_map_like(table.raw)
 
 end
 
@@ -41,5 +41,5 @@ end
 
 Then /^I should see the following vertices:$/ do |table|
   @p.cut(@cut_function)
-  @p.vertices.should == table.raw.map { |t| t.collect(&:to_f) }
+  @p.vertices.should be_vertex_map_like(table.raw)
 end

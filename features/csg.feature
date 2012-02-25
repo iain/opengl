@@ -85,3 +85,15 @@ Feature: CSG Object cutting
       | 0    | 0   | 0 |
       | 0.5  | 0.5 | 0 |
       | 0.25 | 0   | 0 |
+
+  Scenario: Cut plane through with a function coming from above
+    Given I have the following vertices:
+      | 0 | 0 | 0 |
+      | 1 | 1 | 0 |
+      | 2 | 0 | 0 |
+    When I cut with 2 + -2x
+    Then I should see the following vertices:
+      | 1.0  | 0.0  | 0   |
+      | 0.67 | 0.67 | 0   |
+      | 1.0  | 1.0  | 0.0 |
+      | 2.0  | 0.0  | 0.0 |
