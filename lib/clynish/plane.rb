@@ -31,6 +31,7 @@ module Clynish
 
       vertices.combination(2).each do |vertii|
         new_vertex = find_new_vertex(cut_function, *vertii)
+
         if new_vertex
           if to_be_deleted_vertex?(cut_function, vertii[0])
             replacement_vertex = vertii[0]
@@ -47,7 +48,7 @@ module Clynish
     def find_new_vertex(cut_function, *vertii)
       vertices_function = create_function(*vertii)
 
-      x = cross_function(cut_function, vertices_function)
+      x = cross_function(cut_function, vertices_function).round(5)
       if x.finite? && within_plane?(vertii[0][0], vertii[1][0], x)
         [x, cut_function[0] + cut_function[1] * x, 0]
       else
@@ -76,13 +77,17 @@ module Clynish
       dx = vertex_2[0] - vertex_1[0]
       dy = vertex_2[1] - vertex_1[1]
 
-      [vertex_1[1] - vertex_1[0] * (dy / dx), (dy / dx),0]
+      new_func = [vertex_1[1] - vertex_1[0] * (dy / dx), (dy / dx),0]
+      if new_func[0].infinite? && new_func[1].infinite? ##nasty fix for vertical lines
+        new_func = [8e8, -8e8 / vertex_1[0]]
+      end
+      new_func
     end
 
     def within_plane?(a,b,c)
       b, a = a, b if b > a
 
-      (a > c && b < c)
+      (a >= c && b <= c)
     end
 
     def calculate(y0,y,x)
