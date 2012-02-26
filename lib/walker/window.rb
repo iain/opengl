@@ -3,12 +3,19 @@ module Walker
     include Gl, Glu, Glut
 
     attr_reader :controller
-    attr_accessor :width, :height, :title, :framerate
+    attr_accessor :width, :height, :title, :framerate, :lights
 
     def initialize(controller)
       @controller = controller
       controller.window = self
       default_values!
+      self.lights = []
+    end
+
+    def add_light_source(light)
+      light.number = lights.size
+
+      self.lights << light
     end
 
     def default_values!
@@ -58,7 +65,7 @@ module Walker
       glViewport 0, 0, width, height
       glMatrixMode(GL_PROJECTION)
       glLoadIdentity
-      gluPerspective(18, width / height, 1e5, 1e18)
+      gluPerspective(18, width / height, 1e4, 1e11)
       glMatrixMode(GL_MODELVIEW)
     end
 
@@ -77,13 +84,13 @@ module Walker
 
       glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
 
-      #lighting and lighting position _Abstraction would be nice...
+      #default lighting and lighting position
       glEnable(GL_LIGHTING)
       glEnable(GL_LIGHT0)
-      glEnable(GL_LIGHT1)
       glLightfv(GL_LIGHT0, GL_DIFFUSE, [1, 1, 1])
-      glLightfv(GL_LIGHT1, GL_AMBIENT, [1, 1, 1])
-      glLightfv(GL_LIGHT0, GL_POSITION, [0, 2, 0, 0])
+      glLightfv(GL_LIGHT0, GL_POSITION, [0, 3, 0, 0])
+
+      lights.each(&:activate)
 
 
 

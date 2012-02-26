@@ -5,6 +5,7 @@ require 'mathn'
 
 require 'walker/view'
 require 'walker/rotation'
+require 'walker/light'
 require 'walker/camera'
 require 'walker/camera_view'
 require 'walker/textures'
